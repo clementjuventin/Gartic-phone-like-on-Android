@@ -9,5 +9,8 @@
 
     <string name="joinActivity_code_hint">Code du salon</string>
     <string name="joinActivity_pseudo_hint">Pseudonyme</string>
+
+    <string name="paintActivity_back_text">&lt;-</string>
+
     <string name="entrer_text">Entrer</string>
 </resources>

@@ -8,26 +8,16 @@
     <EditText
         android:id="@+id/joinActivity_code"
         android:hint="@string/joinActivity_code_hint"
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text=""
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        style="@style/EditText"/>
 
     <EditText
         android:id="@+id/joinActivity_pseudo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
         android:hint="@string/joinActivity_pseudo_hint"
-        android:inputType="textPersonName"
-        android:text="" />
+        style="@style/EditText"/>
 
     <Button
         android:id="@+id/joinActivity_entrer_button"
+        style="@style/Button"
         android:text="@string/entrer_text"
-        style="@style/EditText"
-        />
+        android:onClick="enterButton"/>
 </LinearLayout>
