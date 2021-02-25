@@ -1,25 +1,39 @@
 package iut.projet.metier;
 
+import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 public class Room {
 
-    private String roomName;
+    public String getRoomCode() {
+        return roomCode;
+    }
 
     private String roomCode;
     private int roomHash;
 
     private Player host;
 
-    private LinkedList<Player> players;
+    public List<Player> getPlayers() {
+        return players;
+    }
 
-    public Room(Player host, String roomName){
-        //+Réseau local
+    private List<Player> players;
+
+    public Room(Player host){
         this.host = host;
-        this.roomName = roomName;
+        this.roomCode = generateRoomCode();
+
+        players = new ArrayList<>();
         addPlayer(this.host);
 
         roomHash = hashCode();
+
+        FirebaseHelper.createRoom(this);
     }
 
     public void start(){
@@ -38,11 +52,20 @@ public class Room {
         }
         players.remove(player);
     }
+    private String generateRoomCode(){
+        int stringLen = 8;
+        Random random = new Random();
+        char[] generatedString = new char [stringLen];
+
+        for (int i=0;i<stringLen;i++){
+            generatedString[i] = (char) ('A' + random.nextInt(26));
+        }
+        return String.valueOf(generatedString);
+    }
 
     @Override
     public int hashCode() {
         int hash = 1;
-        hash = hash * 17 + roomName.hashCode();
         hash = hash * 31 + host.hashCode();
         return hash;
     }

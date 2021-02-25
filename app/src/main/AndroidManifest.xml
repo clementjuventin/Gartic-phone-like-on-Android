@@ -10,12 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjetAndroid">
 
-        <activity android:name=".view.JoinActivity">
+        <activity android:name=".view.ActivitePrincipale">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.HostActivity"/>
+        <activity android:name=".view.JoinActivity"/>
         <activity android:name=".view.PaintActivity"/>
         <activity android:name=".view.DescribeImageActivity"/>
     </application>

@@ -13,8 +13,7 @@ public class Player {
         return playerName;
     }
 
-    public Player(String playerId, String playerName) {
-        this.playerId = playerId;
+    public Player(String playerName) {
         this.playerName = playerName;
     }
 }

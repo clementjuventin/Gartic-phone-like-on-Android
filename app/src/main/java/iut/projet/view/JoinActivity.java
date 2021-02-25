@@ -17,7 +17,10 @@ public class JoinActivity extends AppCompatActivity {
     }
 
     public void enterButton(View view) {
+
+        /*
         Intent intent = new Intent(this, PaintActivity.class);
         startActivity(intent);
+        */
     }
 }
