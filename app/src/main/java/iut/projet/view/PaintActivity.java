@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import iut.projet.R;
+import iut.projet.metier.FirebaseHelper;
 import iut.projet.paint.PaintView;
 
 public class PaintActivity extends AppCompatActivity {
@@ -67,6 +68,8 @@ public class PaintActivity extends AppCompatActivity {
 
     public void validate(View view) {
         Bitmap image = paintView.getmBitmap();
+
+        FirebaseHelper.sendImage(image, "test.jpg");
 
         FileOutputStream outputStream = null;
         try {
