@@ -7,22 +7,17 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import iut.projet.R;
-import iut.projet.metier.FirebaseHelper;
+import iut.projet.metier.FirebaseStorageHelper;
 import iut.projet.paint.PaintView;
 
 public class PaintActivity extends AppCompatActivity {
@@ -69,7 +64,7 @@ public class PaintActivity extends AppCompatActivity {
     public void validate(View view) {
         Bitmap image = paintView.getmBitmap();
 
-        FirebaseHelper.sendImage(image, "test.jpg");
+        FirebaseStorageHelper.sendImage(image, "test.jpg");
 
         FileOutputStream outputStream = null;
         try {

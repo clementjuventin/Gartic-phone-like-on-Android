@@ -9,6 +9,22 @@
     android:orientation="vertical"
     android:gravity="center">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/activite_principale_player_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:hint="@string/joinActivity_pseudo_hint"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Button
         android:id="@+id/activite_princepale_join_button"
         style="@style/Button"

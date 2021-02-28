@@ -13,7 +13,6 @@ import iut.projet.metier.Player;
 import iut.projet.metier.Room;
 
 public class HostActivity extends AppCompatActivity {
-    private Room room;
     private Player host;
 
     @Override
@@ -22,13 +21,13 @@ public class HostActivity extends AppCompatActivity {
         setContentView(R.layout.host_activity);
 
         host = new Player("zoul");
-        room = new Room(host);
+        host.createRoom();
 
-        ((TextView) findViewById(R.id.host_activity_code)).setText(room.getRoomCode());
+        ((TextView) findViewById(R.id.host_activity_code)).setText(host.getCurrentRoom().getRoomCode());
 
         RecyclerView listView = findViewById(R.id.host_activity_listView);
 
         listView.setLayoutManager(new LinearLayoutManager(this));
-        listView.setAdapter(new AdaptateurRoomList(room.getPlayers()));
+        listView.setAdapter(new AdaptateurRoomList(host.getCurrentRoom().getPlayers()));
     }
 }
