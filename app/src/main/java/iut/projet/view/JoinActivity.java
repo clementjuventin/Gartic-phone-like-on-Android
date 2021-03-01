@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import iut.projet.R;
 
 public class JoinActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +19,7 @@ public class JoinActivity extends AppCompatActivity {
 
     public void enterButton(View view) {
         Intent intent = new Intent(this, PaintActivity.class);
+        //Verif si vide
         startActivity(intent);
     }
 }
