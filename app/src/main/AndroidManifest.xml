@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.JoinActivity"/>
+        <activity android:name=".view.JoinActivity" android:parentActivityName=".view.ActivitePrincipale"/>
         <activity android:name=".view.PaintActivity"/>
     </application>
 

@@ -17,9 +17,9 @@ public class JoinActivity extends AppCompatActivity {
         setContentView(R.layout.join_activity);
     }
 
-    public void enterButton(View view) {
+    /*public void enterButton(View view) {
         Intent intent = new Intent(this, PaintActivity.class);
         //Verif si vide
         startActivity(intent);
-    }
+    }*/
 }

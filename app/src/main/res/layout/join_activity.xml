@@ -20,6 +20,6 @@
         android:text="@string/entrer_text"
         android:onClick="enterButton"/>
 
-    <activity android:name=".view.JoinActivity" android:parentActivityName=".view.ActivitePrincipale" />
+
 
 </LinearLayout>
