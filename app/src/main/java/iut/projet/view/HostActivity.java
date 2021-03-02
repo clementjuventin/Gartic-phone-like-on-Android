@@ -33,7 +33,7 @@ public class HostActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.host_activity);
 
-        host = new Player(ActivitePrincipale.getName());
+        host = new Player(ActivitePrincipale.getName(),true);
         host.createRoom();
 
         ((TextView) findViewById(R.id.host_activity_code)).setText(host.getCurrentRoom().getRoomCode());

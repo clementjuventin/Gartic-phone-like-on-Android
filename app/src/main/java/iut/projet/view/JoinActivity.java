@@ -20,11 +20,16 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 
     Context ctxt = this;
     Button btnEnter;
+    TextInputLayout inputText;
+    public static String inputRoomCode;
+        public static String getInputRoomCode() {return inputRoomCode;}
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.join_activity);
+
+        inputText=(TextInputLayout) findViewById(R.id.joinActivity_code);
 
         btnEnter=findViewById(R.id.joinActivity_entrer_button);
         btnEnter.setOnClickListener(this);
@@ -37,8 +42,14 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
             //p.connectToRoom(((TextInputLayout)findViewById(R.id.joinActivity_code)).getEditText().getText().toString());
             //Intent intent = new Intent(ctxt, HostActivity.class);
             //startActivity(intent);
-            Intent intent = new Intent(ctxt, PaintActivity.class);
+            inputRoomCode = inputText.getEditText().getText().toString();
+            if (inputRoomCode.isEmpty()){
+                Log.v("Test","RoomCode non spécifié");
+            }
+            else {
+            Intent intent = new Intent(ctxt, HostActivity.class);
             startActivity(intent);
+            }
         }
     }
 

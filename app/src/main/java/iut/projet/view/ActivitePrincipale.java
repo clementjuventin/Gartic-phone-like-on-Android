@@ -32,7 +32,7 @@ public class ActivitePrincipale extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activite_principale);
 
-        inputText=(TextInputLayout) findViewById(R.id.activite_principale_player_name_layout);
+        inputText=(TextInputLayout) findViewById(R.id.activite_principale_player_name);
 
         btnHost=findViewById(R.id.host);
         btnJoin=findViewById(R.id.join);
@@ -44,13 +44,18 @@ public class ActivitePrincipale extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        Log.v("Test","onClick");
         name = inputText.getEditText().getText().toString();
         if (v.getId() == R.id.host) {
+            if (name.isEmpty()){
+                name = "Hote";
+            }
             Intent intent = new Intent(ctxt, HostActivity.class);
             startActivity(intent);
         }
         if (v.getId() == R.id.join) {
+            if (name.isEmpty()){
+                name = "Invite";
+            }
             Intent intent = new Intent(ctxt, JoinActivity.class);
             startActivity(intent);
         }

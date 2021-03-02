@@ -10,7 +10,7 @@ public class Player {
             return playerId;
         }
 
-    private String playerName;
+    private final String playerName;
         public String getPlayerName() {
         return playerName;
     }
@@ -19,7 +19,9 @@ public class Player {
         public boolean isHost() { return isHost; }
         public void setHost(boolean host) { isHost = host; }
 
+
     private boolean ready;
+        public void setReady(boolean ready) {this.ready = ready;}
 
     private Room currentRoom;
         public Room getCurrentRoom() {
@@ -29,9 +31,10 @@ public class Player {
             this.currentRoom = currentRoom;
         }
 
-    public Player(String playerName) {
+    public Player(String playerName,boolean host) {
         this.ready = false;
         this.playerName = playerName;
+        this.isHost= host;
     }
 
 
