@@ -19,7 +19,7 @@
         <activity android:name=".view.JoinActivity" android:parentActivityName=".view.ActivitePrincipale"/>
         <activity android:name=".view.HostActivity" android:parentActivityName=".view.ActivitePrincipale"/>
         <activity android:name=".view.PaintActivity"/>
-        <activity android:name=".view.DescribeImageActivity"/>
+        <activity android:name=".view.DescribeImageActivity" android:parentActivityName=".view.PaintActivity"/>
     </application>
 
 </manifest>

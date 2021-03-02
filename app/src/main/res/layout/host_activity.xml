@@ -17,7 +17,6 @@
     <Button
         android:id="@+id/host_activity_start_button"
         style="@style/Button"
-        android:onClick="startButton"
         android:text="@string/start" />
 
     <LinearLayout

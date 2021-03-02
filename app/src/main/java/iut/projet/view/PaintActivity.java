@@ -36,10 +36,8 @@ public class PaintActivity extends AppCompatActivity implements View.OnClickList
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         paintView.init(metrics);
 
-
         btnValidate=findViewById(R.id.paint_activity_validateButton);
         btnValidate.setOnClickListener(this);
-
 
         //((Button) R.id.paint_activity_validateButton).addOnLayoutChangeListener();
     }
@@ -47,7 +45,19 @@ public class PaintActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.paint_activity_validateButton) {
-            Intent intent = new Intent(ctxt, HostActivity.class);
+            Bitmap image = paintView.getmBitmap();
+            FirebaseStorageHelper.sendImage(image, "test.jpg");
+            FileOutputStream outputStream = null;
+            try {
+                outputStream = openFileOutput("TestImage.jpeg", Context.MODE_PRIVATE);
+                image.compress(Bitmap.CompressFormat.JPEG,100, outputStream);
+                outputStream.close();
+            } catch (FileNotFoundException e) {
+                Log.d("FileNotFoundException",e.getMessage());
+            } catch (IOException e) {
+                Log.d("IOException",e.getMessage());
+            }
+            Intent intent = new Intent(ctxt, DescribeImageActivity.class);
             startActivity(intent);
         }
 
@@ -77,22 +87,4 @@ public class PaintActivity extends AppCompatActivity implements View.OnClickList
         paintView.deleteLastFingerPath();
     }
 
-    public void validate(View view) {
-        Bitmap image = paintView.getmBitmap();
-
-        FirebaseStorageHelper.sendImage(image, "test.jpg");
-
-        FileOutputStream outputStream = null;
-        try {
-            outputStream = openFileOutput("TestImage.jpeg", Context.MODE_PRIVATE);
-            image.compress(Bitmap.CompressFormat.JPEG,100, outputStream);
-            outputStream.close();
-        } catch (FileNotFoundException e) {
-            Log.d("FileNotFoundException",e.getMessage());
-        } catch (IOException e) {
-            Log.d("IOException",e.getMessage());
-        }
-        Intent intent = new Intent(this, DescribeImageActivity.class);
-        startActivity(intent);
-    }
 }
