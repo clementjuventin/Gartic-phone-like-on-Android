@@ -2,23 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/joinActivity_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:hint="@string/joinActivity_code_hint"
-        style="@style/EditText"/>
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <EditText
-        android:id="@+id/joinActivity_pseudo"
-        android:hint="@string/joinActivity_pseudo_hint"
-        style="@style/EditText"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/joinActivity_entrer_button"
         style="@style/Button"
-        android:text="@string/entrer_text"
-        android:onClick="enterButton"/>
+        android:text="@string/entrer_text"/>
 
 
 

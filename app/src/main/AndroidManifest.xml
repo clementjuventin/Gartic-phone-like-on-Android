@@ -17,7 +17,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.JoinActivity" android:parentActivityName=".view.ActivitePrincipale"/>
+        <activity android:name=".view.HostActivity" android:parentActivityName=".view.ActivitePrincipale"/>
         <activity android:name=".view.PaintActivity"/>
+        <activity android:name=".view.DescribeImageActivity"/>
     </application>
 
 </manifest>

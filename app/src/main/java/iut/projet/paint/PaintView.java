@@ -11,7 +11,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -36,6 +35,10 @@ public class PaintView extends View {
     private int backgroundColor = DEFAULT_BG_COLOR;
     private int strokeWidth; //Largeur du trait
     private Bitmap mBitmap; //Image en bitmap
+    public Bitmap getmBitmap() {
+        return mBitmap;
+    }
+
     private Canvas mCanvas;
     private Paint mBitmapPaint = new Paint(Paint.DITHER_FLAG);
 
@@ -74,7 +77,6 @@ public class PaintView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.d("DEV","onDraw");
         canvas.save();
         mCanvas.drawColor(backgroundColor);
 
@@ -92,7 +94,6 @@ public class PaintView extends View {
     }
 
     private void touchStart(float x, float y) {
-        Log.d("DEV","Touvh start");
         mPath = new Path();
         FingerPath fp = new FingerPath(currentColor, strokeWidth, mPath);
         paths.add(fp);
@@ -104,7 +105,6 @@ public class PaintView extends View {
     }
 
     private void touchMove(float x, float y) {
-        Log.d("DEV","touchMove");
         float dx = Math.abs(x - mX);
         float dy = Math.abs(y - mY);
 
@@ -116,13 +116,11 @@ public class PaintView extends View {
     }
 
     private void touchUp() {
-        Log.d("DEV","touchUp");
         mPath.lineTo(mX, mY);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d("DEV","onTouchEvent");
         float x = event.getX();
         float y = event.getY();
 

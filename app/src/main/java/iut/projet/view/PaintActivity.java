@@ -1,22 +1,31 @@
 package iut.projet.view;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import iut.projet.R;
+import iut.projet.metier.FirebaseStorageHelper;
 import iut.projet.paint.PaintView;
 
-public class PaintActivity extends AppCompatActivity {
+public class PaintActivity extends AppCompatActivity implements View.OnClickListener {
 
     private PaintView paintView;
+    Context ctxt = this;
+    Button btnValidate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,6 +35,22 @@ public class PaintActivity extends AppCompatActivity {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         paintView.init(metrics);
+
+
+        btnValidate=findViewById(R.id.paint_activity_validateButton);
+        btnValidate.setOnClickListener(this);
+
+
+        //((Button) R.id.paint_activity_validateButton).addOnLayoutChangeListener();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.paint_activity_validateButton) {
+            Intent intent = new Intent(ctxt, HostActivity.class);
+            startActivity(intent);
+        }
+
     }
 
     public void changeColorToBlue(View view) {
@@ -50,5 +75,24 @@ public class PaintActivity extends AppCompatActivity {
 
     public void back(View view) {
         paintView.deleteLastFingerPath();
+    }
+
+    public void validate(View view) {
+        Bitmap image = paintView.getmBitmap();
+
+        FirebaseStorageHelper.sendImage(image, "test.jpg");
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = openFileOutput("TestImage.jpeg", Context.MODE_PRIVATE);
+            image.compress(Bitmap.CompressFormat.JPEG,100, outputStream);
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            Log.d("FileNotFoundException",e.getMessage());
+        } catch (IOException e) {
+            Log.d("IOException",e.getMessage());
+        }
+        Intent intent = new Intent(this, DescribeImageActivity.class);
+        startActivity(intent);
     }
 }

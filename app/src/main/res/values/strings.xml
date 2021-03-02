@@ -1,16 +1,19 @@
 <resources>
 <string name="app_name">ProjetAndroid</string>
-    <string name="hint">hint</string>
-    <string name="textview">TextView</string>
     <string name="button">Button</string>
     <string name="regles">Règles</string>
     <string name="rejoindre">Rejoindre</string>
     <string name="heberger">Héberger</string>
+    <string name="start">Commencer</string>
 
     <string name="joinActivity_code_hint">Code du salon</string>
     <string name="joinActivity_pseudo_hint">Pseudonyme</string>
 
+    <string name="host_activity_status">Status</string>
+
+
     <string name="paintActivity_back_text">&lt;-</string>
 
     <string name="entrer_text">Entrer</string>
+    <string name="valider_text">Valider</string>
 </resources>

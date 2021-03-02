@@ -1,25 +1,79 @@
 package iut.projet.metier;
 
-import java.util.LinkedList;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Room {
 
-    private String roomName;
-
+    public String getRoomCode() {
+        return roomCode;
+    }
     private String roomCode;
-    private int roomHash;
 
     private Player host;
+    public List<Player> getPlayers() {
+        return players;
+    }
 
-    private LinkedList<Player> players;
+    private List<Player> players;
+    private DatabaseReference roomRef;
 
-    public Room(Player host, String roomName){
-        //+Réseau local
+    public Room(String roomCode, Player player){
+        this.roomCode = roomCode;
+        players = new ArrayList<>();
+        addPlayer(player);
+
+        this.roomRef = FirebaseDatabaseHelper.joinRoom(this.roomCode, player);
+
+        player.setCurrentRoom(this);
+    }
+
+    public Room(Player host){
         this.host = host;
-        this.roomName = roomName;
+        this.roomCode = generateRoomCode();
+
+        players = new ArrayList<>();
         addPlayer(this.host);
 
-        roomHash = hashCode();
+        this.roomRef = FirebaseDatabaseHelper.createRoom(this.roomCode, host);
+        this.roomRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        host.setCurrentRoom(this);
     }
 
     public void start(){
@@ -38,12 +92,14 @@ public class Room {
         }
         players.remove(player);
     }
+    private String generateRoomCode(){
+        int stringLen = 8;
+        Random random = new Random();
+        char[] generatedString = new char [stringLen];
 
-    @Override
-    public int hashCode() {
-        int hash = 1;
-        hash = hash * 17 + roomName.hashCode();
-        hash = hash * 31 + host.hashCode();
-        return hash;
+        for (int i=0;i<stringLen;i++){
+            generatedString[i] = (char) ('A' + random.nextInt(26));
+        }
+        return String.valueOf(generatedString);
     }
 }

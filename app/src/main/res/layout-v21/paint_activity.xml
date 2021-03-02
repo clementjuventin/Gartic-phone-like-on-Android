@@ -25,11 +25,11 @@
                 android:text="TextView" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/paint_activity_validateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:text="@string/valider_text"/>
 
         </LinearLayout>
 
