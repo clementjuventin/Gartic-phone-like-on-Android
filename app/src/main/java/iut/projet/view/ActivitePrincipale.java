@@ -7,8 +7,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.textfield.TextInputLayout;
+
+import org.w3c.dom.Text;
+
 import iut.projet.R;
 
 public class ActivitePrincipale extends AppCompatActivity implements View.OnClickListener{
@@ -17,11 +23,16 @@ public class ActivitePrincipale extends AppCompatActivity implements View.OnClic
     Button btnHost;
     Button btnJoin;
     Button btnRules;
+    TextInputLayout inputText;
+    public static String name;
+        public static String getName() {return name;}
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activite_principale);
+
+        inputText=(TextInputLayout) findViewById(R.id.activite_principale_player_name_layout);
 
         btnHost=findViewById(R.id.host);
         btnJoin=findViewById(R.id.join);
@@ -33,11 +44,12 @@ public class ActivitePrincipale extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
+        Log.v("Test","onClick");
+        name = inputText.getEditText().getText().toString();
         if (v.getId() == R.id.host) {
             Intent intent = new Intent(ctxt, HostActivity.class);
             startActivity(intent);
         }
-
         if (v.getId() == R.id.join) {
             Intent intent = new Intent(ctxt, JoinActivity.class);
             startActivity(intent);
@@ -45,6 +57,7 @@ public class ActivitePrincipale extends AppCompatActivity implements View.OnClic
         if (v.getId() == R.id.rules) {
         }
     }
+
 
 
 
