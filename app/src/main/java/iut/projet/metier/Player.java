@@ -1,10 +1,17 @@
 package iut.projet.metier;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Player {
     //Identificateur du joueur
@@ -46,6 +53,19 @@ public class Player {
         this.ready = false;
     }
 
+    @Override
+    public boolean equals(@Nullable Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Player)) {
+            return false;
+        }
+        Player c = (Player) o;
+        if(c.getPlayerId()==null) return false;
+        return c.getPlayerId().equals(getPlayerId());
+    }
+
     public void createRoom(RoomDataListener rdl){
         currentRoom = new Room(this, rdl);
     }
@@ -69,5 +89,11 @@ public class Player {
                 }
             }
         });
+    }
+    public Map<String, String> toDictionary() {
+        Map map = new HashMap<String, String>();
+        map.put("playerName", getPlayerName());
+        map.put("playerId", getPlayerId());
+        return map;
     }
 }

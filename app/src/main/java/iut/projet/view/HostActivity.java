@@ -43,11 +43,12 @@ public class HostActivity extends AppCompatActivity implements View.OnClickListe
                 listView.setLayoutManager(new LinearLayoutManager(context));
                 listView.setAdapter(new AdaptateurRoomList(player.getCurrentRoom().getPlayers()));
             }
-            /*
-            if(listView.getAdapter() != null)
-            ((AdaptateurRoomList) listView.getAdapter()).updatePlayers(player.getCurrentRoom().getPlayers());
-             */
-            //
+
+            @Override
+            public void update() {
+                if(listView.getAdapter() != null)
+                    ((AdaptateurRoomList) listView.getAdapter()).updatePlayers(player.getCurrentRoom().getPlayers());
+            }
         };
         player = new Player(getIntent().getStringExtra("playerName"));
         if(getIntent().getStringExtra("roomCode")!=null){

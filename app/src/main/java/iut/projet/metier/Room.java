@@ -1,5 +1,7 @@
 package iut.projet.metier;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -37,7 +39,7 @@ public class Room {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.getResult().hasChild(roomCode)){
-                    handleRoomEvents(FirebaseDatabaseHelper.joinRoom(roomCode, player, players, rdl));
+                    handleRoomEvents(FirebaseDatabaseHelper.joinRoom(roomCode, player, players, rdl), rdl);
                 }
                 else{
 
@@ -50,20 +52,23 @@ public class Room {
         this.roomCode = generateRoomCode();
 
         players = new ArrayList<>();
-        addPlayer(this.host);
 
-        handleRoomEvents(FirebaseDatabaseHelper.createRoom(this.roomCode, host));
+        handleRoomEvents(FirebaseDatabaseHelper.createRoom(this.roomCode, host), rdl);
         host.setCurrentRoom(this);
 
         rdl.initialize();
     }
 
-    public void handleRoomEvents(DatabaseReference roomRef){
+    public void handleRoomEvents(DatabaseReference roomRef, RoomDataListener rdl){
         this.roomRef = roomRef;
         this.roomRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                Player p = new Player((String) snapshot.child("playerName").getValue(), (String) snapshot.child("playerId").getValue());
+                if(!players.contains(p)){
+                    players.add(p);
+                }
+                rdl.update();
             }
 
             @Override
