@@ -3,11 +3,12 @@ package iut.projet.metier;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,16 +29,26 @@ public class Room {
     private List<Player> players;
     private DatabaseReference roomRef;
 
-    public Room(String roomCode, Player player){
+
+    public Room(String roomCode, Player player, RoomStateListener roomStateListener){
         this.roomCode = roomCode;
         players = new ArrayList<>();
         addPlayer(player);
 
-        this.roomRef = FirebaseDatabaseHelper.joinRoom(this.roomCode, player);
-
+        FirebaseDatabaseHelper.getRooms().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.getResult().hasChild(roomCode)){
+                    handleRoomEvents(FirebaseDatabaseHelper.joinRoom(roomCode, player));
+                    roomStateListener.roomExist();
+                }
+                else{
+                    roomStateListener.roomNotExist();
+                }
+            }
+        });
         player.setCurrentRoom(this);
     }
-
     public Room(Player host){
         this.host = host;
         this.roomCode = generateRoomCode();
@@ -45,7 +56,13 @@ public class Room {
         players = new ArrayList<>();
         addPlayer(this.host);
 
-        this.roomRef = FirebaseDatabaseHelper.createRoom(this.roomCode, host);
+        handleRoomEvents(FirebaseDatabaseHelper.createRoom(this.roomCode, host));
+
+        host.setCurrentRoom(this);
+    }
+
+    public void handleRoomEvents(DatabaseReference roomRef){
+        this.roomRef = roomRef;
         this.roomRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -72,8 +89,6 @@ public class Room {
 
             }
         });
-
-        host.setCurrentRoom(this);
     }
 
     public void start(){

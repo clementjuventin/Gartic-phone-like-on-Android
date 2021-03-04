@@ -20,7 +20,7 @@ public class HostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.host_activity);
 
-        host = new Player("zoul");
+        host = new Player(getIntent().getStringExtra("playerName"));
         host.createRoom();
 
         ((TextView) findViewById(R.id.host_activity_code)).setText(host.getCurrentRoom().getRoomCode());

@@ -37,7 +37,7 @@ public class Player {
     public void createRoom(){
         currentRoom = new Room(this);
     }
-    public void connectToRoom(String roomCode){
-        currentRoom = new Room(roomCode, this);
+    public void connectToRoom(String roomCode, RoomStateListener rsl){
+        currentRoom = new Room(roomCode, this, rsl);
     }
 }
