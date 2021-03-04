@@ -30,26 +30,24 @@ public class Room {
     private DatabaseReference roomRef;
 
 
-    public Room(String roomCode, Player player, RoomStateListener roomStateListener){
+    public Room(String roomCode, Player player, RoomDataListener rdl){
         this.roomCode = roomCode;
         players = new ArrayList<>();
-        addPlayer(player);
+        player.setCurrentRoom(this);
 
         FirebaseDatabaseHelper.getRooms().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.getResult().hasChild(roomCode)){
-                    handleRoomEvents(FirebaseDatabaseHelper.joinRoom(roomCode, player));
-                    roomStateListener.roomExist();
+                    handleRoomEvents(FirebaseDatabaseHelper.joinRoom(roomCode, player, players, rdl));
                 }
                 else{
-                    roomStateListener.roomNotExist();
+
                 }
             }
         });
-        player.setCurrentRoom(this);
     }
-    public Room(Player host){
+    public Room(Player host, RoomDataListener rdl){
         this.host = host;
         this.roomCode = generateRoomCode();
 
@@ -57,8 +55,9 @@ public class Room {
         addPlayer(this.host);
 
         handleRoomEvents(FirebaseDatabaseHelper.createRoom(this.roomCode, host));
-
         host.setCurrentRoom(this);
+
+        rdl.initialize();
     }
 
     public void handleRoomEvents(DatabaseReference roomRef){

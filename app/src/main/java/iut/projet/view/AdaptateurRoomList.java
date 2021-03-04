@@ -35,4 +35,9 @@ public class AdaptateurRoomList extends RecyclerView.Adapter {
     public int getItemCount() {
         return playerList.size();
     }
+
+    public void updatePlayers(List<Player> players){
+        this.playerList = players;
+        notifyDataSetChanged();
+    }
 }

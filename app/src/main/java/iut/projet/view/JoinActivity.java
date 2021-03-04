@@ -25,6 +25,8 @@ public class JoinActivity extends AppCompatActivity {
 
     public void enterButton(View view) {
         Player p = new Player(getIntent().getStringExtra("playerName"));
+        String roomCode;
+        roomCode = ((TextInputLayout)findViewById(R.id.joinActivity_code)).getEditText().getText().toString();
 
         AppCompatActivity thisActivity = this;
         RoomStateListener roomStateListener = new RoomStateListener() {
@@ -36,10 +38,11 @@ public class JoinActivity extends AppCompatActivity {
             @Override
             public void roomExist() {
                 Intent intent = new Intent(thisActivity, HostActivity.class);
+                intent.putExtra("roomCode",roomCode);
+                intent.putExtra("playerName",p.getPlayerName());
                 startActivity(intent);
             }
         };
-
-        p.connectToRoom(((TextInputLayout)findViewById(R.id.joinActivity_code)).getEditText().getText().toString(), roomStateListener);
+        p.addRoomStateListener(roomStateListener, roomCode);
     }
 }

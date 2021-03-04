@@ -1,5 +1,11 @@
 package iut.projet.metier;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+
 public class Player {
     //Identificateur du joueur
     private String playerId;
@@ -20,10 +26,19 @@ public class Player {
         return playerName;
     }
 
+    public Player(String playerName, String playerId)
+    {
+        this(playerName);
+        this.playerId = playerId;
+    }
     public Player(String playerName)
     {
-        this.ready = false;
+        this();
         this.playerName = playerName;
+    }
+    public Player()
+    {
+        this.ready = false;
     }
 
     public Room getCurrentRoom() {
@@ -34,10 +49,28 @@ public class Player {
         this.currentRoom = currentRoom;
     }
 
-    public void createRoom(){
-        currentRoom = new Room(this);
+    public void createRoom(RoomDataListener rdl){
+        currentRoom = new Room(this, rdl);
     }
-    public void connectToRoom(String roomCode, RoomStateListener rsl){
-        currentRoom = new Room(roomCode, this, rsl);
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public void connectToRoom(String roomCode, RoomDataListener rdl){
+        currentRoom = new Room(roomCode, this, rdl);
+    }
+    public void addRoomStateListener(RoomStateListener rsl, String roomCode){
+        FirebaseDatabaseHelper.getRooms().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.getResult().hasChild(roomCode)){
+                    rsl.roomExist();
+                }
+                else{
+                    rsl.roomNotExist();
+                }
+            }
+        });
     }
 }
