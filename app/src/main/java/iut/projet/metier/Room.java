@@ -16,10 +16,8 @@ import java.util.Random;
 
 public class Room {
 
-    public String getRoomCode() {
-        return roomCode;
-    }
-    private String roomCode;
+    private final String roomCode;
+        public String getRoomCode() {return roomCode;}
 
     private Player host;
     public List<Player> getPlayers() {

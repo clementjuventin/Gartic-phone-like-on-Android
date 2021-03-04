@@ -9,22 +9,27 @@ import com.google.firebase.database.DataSnapshot;
 public class Player {
     //Identificateur du joueur
     private String playerId;
-    private String playerName;
-    private boolean ready;
+        public void setPlayerId(String playerId) {
+            this.playerId = playerId;
+        }
+        public String getPlayerId() {
+            return playerId;
+        }
 
-    private Room currentRoom;
-
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
-    }
-
-    public String getPlayerId() {
-        return playerId;
-    }
-
-    public String getPlayerName() {
+    private final String playerName;
+        public String getPlayerName() {
         return playerName;
     }
+    private boolean ready;
+        public void setReady(boolean ready) {this.ready = ready;}
+
+    private Room currentRoom;
+        public Room getCurrentRoom() {
+            return currentRoom;
+        }
+        public void setCurrentRoom(Room currentRoom) {
+            this.currentRoom = currentRoom;
+        }
 
     public Player(String playerName, String playerId)
     {
@@ -35,19 +40,14 @@ public class Player {
     {
         this();
         this.playerName = playerName;
+        this.isHost= host;
     }
     public Player()
     {
         this.ready = false;
     }
 
-    public Room getCurrentRoom() {
-        return currentRoom;
-    }
 
-    public void setCurrentRoom(Room currentRoom) {
-        this.currentRoom = currentRoom;
-    }
 
     public void createRoom(RoomDataListener rdl){
         currentRoom = new Room(this, rdl);

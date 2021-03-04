@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,9 +21,11 @@ import iut.projet.R;
 import iut.projet.metier.FirebaseStorageHelper;
 import iut.projet.paint.PaintView;
 
-public class PaintActivity extends AppCompatActivity {
+public class PaintActivity extends AppCompatActivity implements View.OnClickListener {
 
     private PaintView paintView;
+    Context ctxt = this;
+    Button btnValidate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,8 +36,31 @@ public class PaintActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         paintView.init(metrics);
 
+        btnValidate=findViewById(R.id.paint_activity_validateButton);
+        btnValidate.setOnClickListener(this);
 
         //((Button) R.id.paint_activity_validateButton).addOnLayoutChangeListener();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.paint_activity_validateButton) {
+            Bitmap image = paintView.getmBitmap();
+            FirebaseStorageHelper.sendImage(image, "test.jpg");
+            FileOutputStream outputStream = null;
+            try {
+                outputStream = openFileOutput("TestImage.jpeg", Context.MODE_PRIVATE);
+                image.compress(Bitmap.CompressFormat.JPEG,100, outputStream);
+                outputStream.close();
+            } catch (FileNotFoundException e) {
+                Log.d("FileNotFoundException",e.getMessage());
+            } catch (IOException e) {
+                Log.d("IOException",e.getMessage());
+            }
+            Intent intent = new Intent(ctxt, DescribeImageActivity.class);
+            startActivity(intent);
+        }
+
     }
 
     public void changeColorToBlue(View view) {
@@ -61,22 +87,4 @@ public class PaintActivity extends AppCompatActivity {
         paintView.deleteLastFingerPath();
     }
 
-    public void validate(View view) {
-        Bitmap image = paintView.getmBitmap();
-
-        FirebaseStorageHelper.sendImage(image, "test.jpg");
-
-        FileOutputStream outputStream = null;
-        try {
-            outputStream = openFileOutput("TestImage.jpeg", Context.MODE_PRIVATE);
-            image.compress(Bitmap.CompressFormat.JPEG,100, outputStream);
-            outputStream.close();
-        } catch (FileNotFoundException e) {
-            Log.d("FileNotFoundException",e.getMessage());
-        } catch (IOException e) {
-            Log.d("IOException",e.getMessage());
-        }
-        Intent intent = new Intent(this, DescribeImageActivity.class);
-        startActivity(intent);
-    }
 }
