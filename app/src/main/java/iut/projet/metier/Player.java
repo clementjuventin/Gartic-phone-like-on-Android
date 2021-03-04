@@ -28,7 +28,10 @@ public class Player {
         return playerName;
     }
     private boolean ready;
-        public void setReady(boolean ready) {this.ready = ready;}
+        public void setReady(boolean ready) {
+            this.ready = ready;
+            FirebaseDatabaseHelper.setPlayerReady(this.currentRoom.getRoomCode(), this);
+        }
 
     private Room currentRoom;
         public Room getCurrentRoom() {
@@ -38,9 +41,10 @@ public class Player {
             this.currentRoom = currentRoom;
         }
 
-    public Player(String playerName, String playerId)
+    public Player(String playerName, String playerId, Boolean ready)
     {
         this(playerName);
+        this.ready = ready;
         this.playerId = playerId;
     }
     public Player(String playerName)
@@ -90,10 +94,16 @@ public class Player {
             }
         });
     }
+
+    public boolean isReady() {
+        return ready;
+    }
+
     public Map<String, String> toDictionary() {
         Map map = new HashMap<String, String>();
         map.put("playerName", getPlayerName());
         map.put("playerId", getPlayerId());
+        map.put("ready", ready?"1":"0");
         return map;
     }
 }

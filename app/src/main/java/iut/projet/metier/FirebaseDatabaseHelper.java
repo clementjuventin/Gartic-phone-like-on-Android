@@ -44,4 +44,8 @@ public class FirebaseDatabaseHelper {
     public static Task<DataSnapshot> getRooms() {
         return database.getReference().get();
     }
+    public static void setPlayerReady(String roomCode, Player player) {
+        DatabaseReference roomRef = database.getReference(roomCode);
+        roomRef.child(player.getPlayerId()).child("ready").setValue(player.isReady()?"1":"0");
+    }
 }

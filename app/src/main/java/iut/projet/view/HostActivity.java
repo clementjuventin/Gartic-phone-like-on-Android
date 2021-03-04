@@ -28,7 +28,7 @@ import iut.projet.metier.RoomStateListener;
 public class HostActivity extends AppCompatActivity implements View.OnClickListener {
     private Player player;
     private RoomDataListener rdl;
-    Button btnStart;
+    private Button btnStart;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,11 +66,7 @@ public class HostActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == R.id.host_activity_start_button) {
             //Il faudrait mettre l'état du joueur à prêt. Si tous les joueurs sont prêts ça commence
-            /*
-            //Verif nombre de joueurs >= 3, if(){} else {}
-            Intent intent = new Intent(ctxt, PaintActivity.class);
-            startActivity(intent);
-            */
+            player.setReady(!player.isReady());
         }
     }
 }

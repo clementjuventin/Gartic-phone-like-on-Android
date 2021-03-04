@@ -64,7 +64,7 @@ public class Room {
         this.roomRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Player p = new Player((String) snapshot.child("playerName").getValue(), (String) snapshot.child("playerId").getValue());
+                Player p = new Player((String) snapshot.child("playerName").getValue(), (String) snapshot.child("playerId").getValue(), ((String) snapshot.child("ready").getValue()).equals("0")?false:true);
                 if(!players.contains(p)){
                     players.add(p);
                 }
@@ -73,12 +73,17 @@ public class Room {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                Player p = new Player((String) snapshot.child("playerName").getValue(), (String) snapshot.child("playerId").getValue(), ((String) snapshot.child("ready").getValue()).equals("0")?false:true);
+                if(players.contains(p)){
+                    players.set(players.indexOf(p),p);
+                }
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
+                Player p = new Player((String) snapshot.child("playerName").getValue(), (String) snapshot.child("playerId").getValue(),((String) snapshot.child("ready").getValue()).equals("0")?false:true);
+                players.remove(p);
+                rdl.update();
             }
 
             @Override
