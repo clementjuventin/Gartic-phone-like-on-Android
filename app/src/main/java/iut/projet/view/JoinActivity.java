@@ -19,6 +19,10 @@ public class JoinActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.join_activity);
+
+        if(savedInstanceState!=null){
+            Log.d("dev",(String) getIntent().getExtras().get("playerName"));
+        }
     }
 
     public void enterButton(View view) {

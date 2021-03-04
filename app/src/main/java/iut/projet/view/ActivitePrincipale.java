@@ -6,6 +6,9 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.textfield.TextInputLayout;
+
 import iut.projet.R;
 
 public class ActivitePrincipale extends AppCompatActivity {
@@ -18,6 +21,7 @@ public class ActivitePrincipale extends AppCompatActivity {
 
     public void hostButton(View view) {
         Intent intent = new Intent(this, HostActivity.class);
+        intent.putExtra("playerName",((TextInputLayout)findViewById(R.id.activite_principale_player_name)).getEditText().getText().toString());
         startActivity(intent);
     }
 
