@@ -47,29 +47,29 @@ public class ActivitePrincipale extends AppCompatActivity implements View.OnClic
         btnJoin.setOnClickListener(this);
         btnRules.setOnClickListener(this);
 
-        @Override
-        public void onClick(View v) {
-            name = inputText.getEditText().getText().toString();
-            if (v.getId() == R.id.host) {
-                String name = ((TextInputLayout)findViewById(R.id.activite_principale_player_name)).getEditText().getText().toString();
-                Intent intent = new Intent(this, HostActivity.class);
-                intent.putExtra("playerName",name);
+    }
+    @Override
+    public void onClick(View v) {
+        name = inputText.getEditText().getText().toString();
+        if (v.getId() == R.id.host) {
+            String name = ((TextInputLayout)findViewById(R.id.activite_principale_player_name)).getEditText().getText().toString();
+            Intent intent = new Intent(this, HostActivity.class);
+            intent.putExtra("playerName",name);
 
-                updatePreferencesForName(name);
+            updatePreferencesForName(name);
 
-                startActivity(intent);
-            }
-            if (v.getId() == R.id.join) {
-                String name = ((TextInputLayout)findViewById(R.id.activite_principale_player_name)).getEditText().getText().toString();
-                Intent intent = new Intent(this, JoinActivity.class);
-                intent.putExtra("playerName",name);
+            startActivity(intent);
+        }
+        if (v.getId() == R.id.join) {
+            String name = ((TextInputLayout)findViewById(R.id.activite_principale_player_name)).getEditText().getText().toString();
+            Intent intent = new Intent(this, JoinActivity.class);
+            intent.putExtra("playerName",name);
 
-                updatePreferencesForName(name);
+            updatePreferencesForName(name);
 
-                startActivity(intent);
-            }
-            if (v.getId() == R.id.rules) {
-            }
+            startActivity(intent);
+        }
+        if (v.getId() == R.id.rules) {
         }
     }
     private void updatePreferencesForName(String name){

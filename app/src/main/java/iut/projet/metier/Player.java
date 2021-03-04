@@ -16,7 +16,7 @@ public class Player {
             return playerId;
         }
 
-    private final String playerName;
+    private String playerName;
         public String getPlayerName() {
         return playerName;
     }
@@ -40,14 +40,11 @@ public class Player {
     {
         this();
         this.playerName = playerName;
-        this.isHost= host;
     }
     public Player()
     {
         this.ready = false;
     }
-
-
 
     public void createRoom(RoomDataListener rdl){
         currentRoom = new Room(this, rdl);
