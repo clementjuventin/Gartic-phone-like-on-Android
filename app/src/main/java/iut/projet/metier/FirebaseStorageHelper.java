@@ -57,10 +57,4 @@ public class FirebaseStorageHelper {
             }
         });
     }
-    public static Boolean roomExist(String code){
-        return  false;
-    }
-    public static void createRoom(Room room){
-
-    }
 }

@@ -19,11 +19,13 @@ public class FirebaseDatabaseHelper {
     private static FirebaseDatabase database = FirebaseDatabase.getInstance("https://applicationdessineitandroid-default-rtdb.europe-west1.firebasedatabase.app/");
 
     public static DatabaseReference createRoom(String roomCode, Player host){
-        DatabaseReference roomRef = database.getReference("ABC");//->debug
+        DatabaseReference roomRef = database.getReference("ABC");//roomCode);//->debug
         String key = roomRef.push().getKey();
         host.setPlayerId(key);
 
-        roomRef.child(host.getPlayerId()).setValue(host.toDictionary());
+        roomRef.child("players").child(host.getPlayerId()).setValue(host.toDictionary());
+
+        roomRef.child("game").child("locked").setValue("0");
 
         return roomRef;
     }
@@ -32,7 +34,7 @@ public class FirebaseDatabaseHelper {
 
         player.setPlayerId(roomRef.push().getKey());
 
-        roomRef.child(player.getPlayerId()).setValue(player.toDictionary());
+        roomRef.child("players").child(player.getPlayerId()).setValue(player.toDictionary());
         roomRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -44,8 +46,29 @@ public class FirebaseDatabaseHelper {
     public static Task<DataSnapshot> getRooms() {
         return database.getReference().get();
     }
+    public static void isLocked(String roomCode, RoomStateListener rsl){
+        DatabaseReference roomRef = database.getReference(roomCode);
+        roomRef.child("game").child("locked");
+        roomRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.getResult().hasChild("game")){
+                    if(((String) task.getResult().child("game").child("locked").getValue()).equals("0")){
+                        rsl.roomExist();
+                        return;
+                    }
+                }
+                rsl.roomNotExist();
+            }
+        });
+    }
+
     public static void setPlayerReady(String roomCode, Player player) {
         DatabaseReference roomRef = database.getReference(roomCode);
-        roomRef.child(player.getPlayerId()).child("ready").setValue(player.isReady()?"1":"0");
+        roomRef.child("players").child(player.getPlayerId()).child("ready").setValue(player.isReady()?"1":"0");
+    }
+    public static void setLocked(String roomCode, String state) {
+        DatabaseReference roomRef = database.getReference(roomCode);
+        roomRef.child("game").child("locked").setValue(state);
     }
 }

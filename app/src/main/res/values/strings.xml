@@ -18,5 +18,7 @@
     <string name="entrer_text">Entrer</string>
     <string name="valider_text">Valider</string>
 
+    <string name="game_session_start">Que vais-je faire deviner?</string>
+
     <string name="conn_error_text">Erreur de connexion</string>
 </resources>

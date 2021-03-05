@@ -20,7 +20,6 @@ import iut.projet.metier.RoomStateListener;
 
 public class JoinActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Context ctxt = this;
     Button btnEnter;
     TextInputLayout inputText;
     public static String inputRoomCode;

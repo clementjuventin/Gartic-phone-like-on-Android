@@ -86,7 +86,7 @@ public class Player {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.getResult().hasChild(roomCode)){
-                    rsl.roomExist();
+                    FirebaseDatabaseHelper.isLocked(roomCode, rsl);
                 }
                 else{
                     rsl.roomNotExist();

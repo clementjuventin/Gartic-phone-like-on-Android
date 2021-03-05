@@ -37,6 +37,7 @@ public class HostActivity extends AppCompatActivity implements View.OnClickListe
         Context context = this;
         RecyclerView listView = findViewById(R.id.host_activity_listView);
 
+        AppCompatActivity thisActivity = this;
         rdl = new RoomDataListener() {
             @Override
             public void initialize() {
@@ -48,6 +49,14 @@ public class HostActivity extends AppCompatActivity implements View.OnClickListe
             public void update() {
                 if(listView.getAdapter() != null)
                     ((AdaptateurRoomList) listView.getAdapter()).updatePlayers(player.getCurrentRoom().getPlayers());
+            }
+
+            @Override
+            public void lunch() {
+                Intent intent = new Intent(thisActivity, PaintActivity.class);
+                intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
+                intent.putExtra("playerName",player.getPlayerName());
+                startActivity(intent);
             }
         };
         player = new Player(getIntent().getStringExtra("playerName"));

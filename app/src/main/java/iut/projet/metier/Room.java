@@ -39,7 +39,7 @@ public class Room {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.getResult().hasChild(roomCode)){
-                    handleRoomEvents(FirebaseDatabaseHelper.joinRoom(roomCode, player, players, rdl), rdl);
+                    handleRoomEvents(FirebaseDatabaseHelper.joinRoom(roomCode, player, players, rdl).child("players"), rdl);
                 }
                 else{
 
@@ -53,7 +53,7 @@ public class Room {
 
         players = new ArrayList<>();
 
-        handleRoomEvents(FirebaseDatabaseHelper.createRoom(this.roomCode, host), rdl);
+        handleRoomEvents(FirebaseDatabaseHelper.createRoom(this.roomCode, host).child("players"), rdl);
         host.setCurrentRoom(this);
 
         rdl.initialize();
@@ -77,6 +77,12 @@ public class Room {
                 if(players.contains(p)){
                     players.set(players.indexOf(p),p);
                 }
+                if(players.size()<3) return;
+                for (Player pyr :players){
+                    if(!pyr.isReady()) return;
+                }
+                if(host!=null) FirebaseDatabaseHelper.setLocked(roomCode, "1");
+                rdl.lunch();
             }
 
             @Override
