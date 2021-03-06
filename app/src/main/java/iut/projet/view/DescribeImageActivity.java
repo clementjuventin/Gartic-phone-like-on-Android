@@ -44,7 +44,7 @@ public class DescribeImageActivity extends AppCompatActivity {
         }
         imageView.setImageBitmap(bmp);
         /////////////////////////////////////////////
-
+/*
         FileInputStream inputStream = null;
         try {
             inputStream = openFileInput("TestImage.jpeg");
@@ -55,5 +55,7 @@ public class DescribeImageActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.d("IOException",e.getMessage());
         }
+        
+ */
     }
 }

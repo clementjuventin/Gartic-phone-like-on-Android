@@ -71,4 +71,8 @@ public class FirebaseDatabaseHelper {
         DatabaseReference roomRef = database.getReference(roomCode);
         roomRef.child("game").child("locked").setValue(state);
     }
+    public static void sendExpression(String roomCode, String playerId, String expression, int turn){
+        DatabaseReference roomRef = database.getReference(roomCode);
+        roomRef.child("game").child("turn"+String.valueOf(turn)).child(playerId).setValue(expression);
+    }
 }

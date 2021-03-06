@@ -21,4 +21,5 @@
     <string name="game_session_start">Que vais-je faire deviner?</string>
 
     <string name="conn_error_text">Erreur de connexion</string>
+    <string name="go_text">Go!</string>
 </resources>

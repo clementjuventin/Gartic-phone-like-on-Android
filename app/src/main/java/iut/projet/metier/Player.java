@@ -106,4 +106,7 @@ public class Player {
         map.put("ready", ready?"1":"0");
         return map;
     }
+    public void sendExpression(int turnNumber, String expression){
+        FirebaseDatabaseHelper.sendExpression(this.currentRoom.getRoomCode(), getPlayerId(), expression, turnNumber);
+    }
 }

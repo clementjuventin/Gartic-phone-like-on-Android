@@ -53,10 +53,10 @@ public class HostActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void lunch() {
-                Intent intent = new Intent(thisActivity, PaintActivity.class);
+                Intent intent = new Intent(thisActivity, GameSessionStart.class);
                 intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
+                intent.putExtra("playerId",player.getPlayerId());
                 intent.putExtra("playerName",player.getPlayerName());
-                intent.putExtra("isHost",player.getCurrentRoom().getHost()==null);
                 startActivity(intent);
             }
         };

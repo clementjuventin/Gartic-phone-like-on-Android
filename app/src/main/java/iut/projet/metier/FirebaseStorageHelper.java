@@ -37,7 +37,7 @@ public class FirebaseStorageHelper {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.d("dev", "ok");
+                Log.d("dev", "ok----------------------------------------------------------------------------------------------");
                 getImage(imagePath);
             }
         });
