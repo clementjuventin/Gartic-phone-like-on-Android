@@ -56,6 +56,7 @@ public class HostActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(thisActivity, PaintActivity.class);
                 intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
                 intent.putExtra("playerName",player.getPlayerName());
+                intent.putExtra("isHost",player.getCurrentRoom().getHost()==null);
                 startActivity(intent);
             }
         };

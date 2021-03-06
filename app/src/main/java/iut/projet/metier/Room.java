@@ -130,4 +130,8 @@ public class Room {
         }
         return String.valueOf(generatedString);
     }
+
+    public Player getHost() {
+        return host;
+    }
 }
