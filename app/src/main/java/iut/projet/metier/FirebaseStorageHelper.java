@@ -38,17 +38,16 @@ public class FirebaseStorageHelper {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.d("dev", "ok----------------------------------------------------------------------------------------------");
-                getImage(imagePath);
             }
         });
     }
-    public static void getImage(String path){
+    public static void getImage(String path, StorageConnectionListener scl){
         StorageReference imageRef = storageRef.child(path);
 
         imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.d("dev", uri.toString());
+                scl.loadUri(uri);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

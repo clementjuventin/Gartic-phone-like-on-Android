@@ -89,20 +89,13 @@ public class PaintActivity extends AppCompatActivity {
                     Log.d("IOException",e.getMessage());
                 }
                  */
-                /*
-                Intent intent = new Intent(ctxt, DescribeImageActivity.class);
-                startActivity(intent);
-
-                 */
-                /*
                 player.sendExpression(1, ((TextInputLayout) findViewById(R.id.gamesessionstart_expression_player_name)).getEditText().getText().toString());
-                Intent intent = new Intent(thisActivity, PaintActivity.class);
+                Intent intent = new Intent(thisActivity, DescribeImageActivity.class);
                 intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
                 intent.putExtra("playerId",player.getPlayerId());
                 intent.putExtra("playerName",player.getPlayerName());
+                intent.putExtra("currentTurn", getIntent().getStringExtra("currentTurn"));
                 startActivity(intent);
-
-                 */
             }
         }.start();
     }

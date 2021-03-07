@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="iut.projet">
 
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjetAndroid">
 
-        <activity android:name=".view.GameSessionStart">
+        <activity android:name=".view.DescribeImageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -18,9 +20,9 @@
         </activity>
         <activity android:name=".view.JoinActivity"/>
         <activity android:name=".view.HostActivity"/>
-        <activity android:name=".view.ActivitePrincipale"/>
+        <activity android:name=".view.GameSessionStart"/>
         <activity android:name=".view.PaintActivity"/>
-        <activity android:name=".view.DescribeImageActivity"/>
+        <activity android:name=".view.ActivitePrincipale"/>
     </application>
 
 </manifest>

@@ -4,12 +4,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,9 +22,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import iut.projet.R;
+import iut.projet.metier.FirebaseDatabaseHelper;
+import iut.projet.metier.FirebaseStorageHelper;
+import iut.projet.metier.LoadImage;
+import iut.projet.metier.Player;
+import iut.projet.metier.Room;
+import iut.projet.metier.StorageConnectionListener;
 
 public class DescribeImageActivity extends AppCompatActivity {
     ImageView imageView;
+    private Player player;
+    private Room room;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,33 +40,17 @@ public class DescribeImageActivity extends AppCompatActivity {
         setContentView(R.layout.describe_image_activity);
         imageView = findViewById(R.id.describe_image_activity_image);
 
-        /////////////////////////////////////////////
-        URL url = null;
-        try {
-            url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        Bitmap bmp = null;
-        try {
-            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        imageView.setImageBitmap(bmp);
-        /////////////////////////////////////////////
-/*
-        FileInputStream inputStream = null;
-        try {
-            inputStream = openFileInput("TestImage.jpeg");
-            imageView.setImageDrawable(Drawable.createFromStream(inputStream,"TestImage.jpeg"));
-            inputStream.close();
-        } catch (FileNotFoundException e) {
-            Log.d("FileNotFoundException",e.getMessage());
-        } catch (IOException e) {
-            Log.d("IOException",e.getMessage());
-        }
-        
- */
+        player = new Player( getIntent().getStringExtra("playerName"), getIntent().getStringExtra("playerId"),true);
+        room = player.getCurrentRoom();
+
+        StorageConnectionListener scl = new StorageConnectionListener() {
+            @Override
+            public void loadUri(Uri uri) {
+                LoadImage loadImage = new LoadImage(imageView);
+                loadImage.execute(uri.toString());
+            }
+        };
+        //FirebaseStorageHelper.getImage(player.getPlayerId()+getIntent().getStringExtra("currentTurn"), scl);
+        FirebaseStorageHelper.getImage("-MV7j6SNkUDThn7uHyxX"+"2", scl);
     }
 }
