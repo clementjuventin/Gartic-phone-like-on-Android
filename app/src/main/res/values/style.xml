@@ -36,4 +36,10 @@
         <item name="android:layout_marginRight">30dp</item>
         <item name="android:height">60dp</item>
     </style>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
 </resources>

@@ -10,16 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjetAndroid">
 
-        <activity android:name=".view.ActivitePrincipale">
+        <activity android:name=".view.ActivitePrincipale" android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.JoinActivity" android:parentActivityName=".view.ActivitePrincipale"/>
-        <activity android:name=".view.HostActivity" android:parentActivityName=".view.ActivitePrincipale"/>
-        <activity android:name=".view.PaintActivity"/>
-        <activity android:name=".view.DescribeImageActivity" android:parentActivityName=".view.PaintActivity"/>
+        <activity android:name=".view.JoinActivity" android:theme="@style/AppTheme" android:parentActivityName=".view.ActivitePrincipale"/>
+        <activity android:name=".view.HostActivity" android:theme="@style/AppTheme" android:parentActivityName=".view.ActivitePrincipale"/>
+        <activity android:name=".view.PaintActivity" android:theme="@style/AppTheme"/>
+        <activity android:name=".view.DescribeImageActivity" android:theme="@style/AppTheme" android:parentActivityName=".view.PaintActivity"/>
     </application>
 
 </manifest>
