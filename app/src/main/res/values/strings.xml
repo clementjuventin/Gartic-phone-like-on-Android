@@ -16,4 +16,5 @@
 
     <string name="entrer_text">Entrer</string>
     <string name="valider_text">Valider</string>
+    <string name="back">Retour</string>
 </resources>
