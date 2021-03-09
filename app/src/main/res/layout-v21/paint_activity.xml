@@ -68,7 +68,7 @@
         <Button
             android:id="@+id/paint_activity_backButton"
             style="@style/ColoredButton"
-            android:text="@string/paintActivity_back_text"
+            android:text="@string/back_arrow"
             android:onClick="back"/>
     </LinearLayout>
 
