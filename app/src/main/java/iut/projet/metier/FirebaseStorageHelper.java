@@ -19,7 +19,7 @@ public class FirebaseStorageHelper {
     private static FirebaseStorage storage = FirebaseStorage.getInstance();
     private static StorageReference storageRef = storage.getReference();
 
-    public static void sendImage(Bitmap image, String imagePath){//, String message, Player sender){
+    public static void sendImage(Bitmap image, String imagePath, StorageInterractionListener sil){//, String message, Player sender){
         StorageReference imageRef = storageRef.child(imagePath);
         // While the file names are the same, the references point to different files
         imageRef.getName().equals(imageRef.getName());    // true
@@ -32,12 +32,12 @@ public class FirebaseStorageHelper {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d("dev", e.getMessage());
+                sil.failed();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.d("dev", "ok----------------------------------------------------------------------------------------------");
+                sil.complete();
             }
         });
     }
@@ -52,7 +52,7 @@ public class FirebaseStorageHelper {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Log.d("dev", exception.getMessage());
+                //Log.d("dev", exception.getMessage());
             }
         });
     }

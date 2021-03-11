@@ -16,42 +16,75 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import iut.projet.R;
+import iut.projet.metier.FirebaseDatabaseHelper;
 import iut.projet.metier.FirebaseStorageHelper;
 import iut.projet.metier.Player;
 import iut.projet.metier.Room;
 import iut.projet.metier.RoomDataListener;
+import iut.projet.metier.StorageInterractionListener;
 import iut.projet.paint.PaintView;
 
 public class PaintActivity extends AppCompatActivity {
 
     private PaintView paintView;
-    Context ctxt = this;
 
     private Player player;
-    private RoomDataListener rdl;
-    private Room room;
-
     private TextView chrono;
+    private TextView expressionTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.paint_activity);
+
+        //Paint view settings
         paintView = (PaintView) findViewById(R.id.paintView);
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         paintView.init(metrics);
 
-        rdl = new RoomDataListener() {
+        chrono = ((TextView) findViewById(R.id.paint_activity_chrono));
+        expressionTextView = ((TextView) findViewById(R.id.paint_activity_expression));
+
+        AppCompatActivity thisActivity = this;
+        player = new Player(getIntent().getStringExtra("playerName"), getIntent().getStringExtra("playerId"), true);
+
+        RoomDataListener rdl = new RoomDataListener() {
             @Override
             public void initialize() {
+                FirebaseDatabaseHelper.getExpression(player.getCurrentRoom().getRoomCode(), player.getPlayerId(), Integer.parseInt(getIntent().getStringExtra("currentTurn")), expressionTextView);
+                new CountDownTimer(60*1000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        chrono.setText(String.valueOf(millisUntilFinished / 1000));
+                    }
+                    public void onFinish() {
+                        Bitmap image = paintView.getmBitmap();
+                        StorageInterractionListener sil = new StorageInterractionListener() {
+                            @Override
+                            public void complete() {
+                                Intent intent = new Intent(thisActivity, DescribeImageActivity.class);
+                                intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
+                                intent.putExtra("playerId",player.getPlayerId());
+                                intent.putExtra("playerName",player.getPlayerName());
+                                intent.putExtra("currentTurn", getIntent().getStringExtra("currentTurn"));
+                                startActivity(intent);
+                            }
 
+                            @Override
+                            public void failed() {
+
+                            }
+                        };
+                        FirebaseStorageHelper.sendImage(image, player.getPlayerId()+getIntent().getStringExtra("currentTurn"), sil);
+                    }
+                }.start();
             }
 
             @Override
@@ -64,40 +97,7 @@ public class PaintActivity extends AppCompatActivity {
 
             }
         };
-
-        chrono = ((TextView) findViewById(R.id.paint_activity_chrono));
-        player = new Player(getIntent().getStringExtra("playerName"), getIntent().getStringExtra("playerId"), true);
-        room = new Room(getIntent().getStringExtra("roomCode"),player,rdl);
-
-        AppCompatActivity thisActivity = this;
-        new CountDownTimer(15*1000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                chrono.setText(String.valueOf(millisUntilFinished / 1000));
-            }
-            public void onFinish() {
-                Bitmap image = paintView.getmBitmap();
-                FirebaseStorageHelper.sendImage(image, player.getPlayerId()+getIntent().getStringExtra("currentTurn"));
-                /*
-                FileOutputStream outputStream = null;
-                try {
-                    outputStream = openFileOutput("TestImage.jpeg", Context.MODE_PRIVATE);
-                    image.compress(Bitmap.CompressFormat.JPEG,100, outputStream);
-                    outputStream.close();
-                } catch (FileNotFoundException e) {
-                    Log.d("FileNotFoundException",e.getMessage());
-                } catch (IOException e) {
-                    Log.d("IOException",e.getMessage());
-                }
-                 */
-                player.sendExpression(1, ((TextInputLayout) findViewById(R.id.gamesessionstart_expression_player_name)).getEditText().getText().toString());
-                Intent intent = new Intent(thisActivity, DescribeImageActivity.class);
-                intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
-                intent.putExtra("playerId",player.getPlayerId());
-                intent.putExtra("playerName",player.getPlayerName());
-                intent.putExtra("currentTurn", getIntent().getStringExtra("currentTurn"));
-                startActivity(intent);
-            }
-        }.start();
+        new Room(getIntent().getStringExtra("roomCode"),player, rdl);
     }
 
     public void changeColorToBlue(View view) {

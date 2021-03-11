@@ -79,7 +79,13 @@ public class Player {
     }
 
     public void connectToRoom(String roomCode, RoomDataListener rdl){
-        currentRoom = new Room(roomCode, this, rdl);
+        Player p = this;
+        FirebaseDatabaseHelper.addPlayerToRoom(roomCode, this).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                currentRoom = new Room(roomCode, p, rdl);
+            }
+        });
     }
     public void addRoomStateListener(RoomStateListener rsl, String roomCode){
         FirebaseDatabaseHelper.getRooms().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {

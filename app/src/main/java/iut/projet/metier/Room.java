@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Room {
-
+    //Identifiant de la room dans firebase database
     private final String roomCode;
         public String getRoomCode() {return roomCode;}
 
@@ -29,7 +29,7 @@ public class Room {
     private List<Player> players;
     private DatabaseReference roomRef;
 
-
+    //Rejoin une room et ajoute le joueur dedans
     public Room(String roomCode, Player player, RoomDataListener rdl){
         this.roomCode = roomCode;
         players = new ArrayList<>();
@@ -39,7 +39,7 @@ public class Room {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.getResult().hasChild(roomCode)){
-                    handleRoomEvents(FirebaseDatabaseHelper.joinRoom(roomCode, player, players, rdl).child("players"), rdl);
+                    handleRoomEvents(FirebaseDatabaseHelper.joinRoom(roomCode, rdl).child("players"), rdl);
                 }
                 else{
 
@@ -47,6 +47,7 @@ public class Room {
             }
         });
     }
+    //Crée une room à partir d'un host
     public Room(Player host, RoomDataListener rdl){
         this.host = host;
         this.roomCode = generateRoomCode();
@@ -58,7 +59,7 @@ public class Room {
 
         rdl.initialize();
     }
-
+    //Gere les évennements qui peuvent arriver sur les joueurs de la room
     public void handleRoomEvents(DatabaseReference roomRef, RoomDataListener rdl){
         this.roomRef = roomRef;
         this.roomRef.addChildEventListener(new ChildEventListener() {
@@ -104,10 +105,6 @@ public class Room {
         });
     }
 
-    public void start(){
-
-    }
-
     public void addPlayer(Player player){
         if(players.contains(player)){
             throw new IllegalStateException("Un joueur ne peut être qu'une fois dans une salle.");
@@ -129,9 +126,5 @@ public class Room {
             generatedString[i] = (char) ('A' + random.nextInt(26));
         }
         return String.valueOf(generatedString);
-    }
-
-    public Player getHost() {
-        return host;
     }
 }
