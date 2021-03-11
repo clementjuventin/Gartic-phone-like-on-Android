@@ -70,6 +70,8 @@ public class ActivitePrincipale extends AppCompatActivity implements View.OnClic
             startActivity(intent);
         }
         if (v.getId() == R.id.rules) {
+            Intent intent = new Intent(ctxt, RulesActivity.class);
+            startActivity(intent);
         }
     }
     private void updatePreferencesForName(String name){
