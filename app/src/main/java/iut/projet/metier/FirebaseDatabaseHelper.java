@@ -21,7 +21,7 @@ public class FirebaseDatabaseHelper {
 
     //Permet de créer une room à partir d'un code et d'un host
     public static DatabaseReference createRoom(String roomCode, Player host){
-        DatabaseReference roomRef = database.getReference("ABC");//roomCode);//->debug
+        DatabaseReference roomRef = database.getReference(roomCode);//->debug "ABC");//
         String key = roomRef.push().getKey();
         host.setPlayerId(key);
 
@@ -79,9 +79,9 @@ public class FirebaseDatabaseHelper {
         roomRef.child("game").child("locked").setValue(state);
     }
     //Envois une expression dans la database
-    public static void sendExpression(String roomCode, String playerId, String expression, int turn){
+    public static Task sendExpression(String roomCode, String playerId, String expression, int turn){
         DatabaseReference roomRef = database.getReference(roomCode);
-        roomRef.child("game").child("turn"+String.valueOf(turn)).child(playerId).setValue(expression);
+        return roomRef.child("game").child("turn"+String.valueOf(turn)).child(playerId).setValue(expression);
     }
     //Récupère une expression dans la database
     public static void getExpression(String roomCode, String targetId, int turn, TextView textView){

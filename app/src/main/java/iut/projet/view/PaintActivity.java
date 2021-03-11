@@ -54,12 +54,13 @@ public class PaintActivity extends AppCompatActivity {
         expressionTextView = ((TextView) findViewById(R.id.paint_activity_expression));
 
         AppCompatActivity thisActivity = this;
-        player = new Player(getIntent().getStringExtra("playerName"), getIntent().getStringExtra("playerId"), true);
+        player = new Player(getIntent().getStringExtra("playerName"), getIntent().getStringExtra("playerId"), false);
 
         RoomDataListener rdl = new RoomDataListener() {
             @Override
             public void initialize() {
-                FirebaseDatabaseHelper.getExpression(player.getCurrentRoom().getRoomCode(), player.getPlayerId(), Integer.parseInt(getIntent().getStringExtra("currentTurn")), expressionTextView);
+                int turn = Integer.parseInt(getIntent().getStringExtra("currentTurn"));
+                FirebaseDatabaseHelper.getExpression(player.getCurrentRoom().getRoomCode(), player.getCurrentRoom().getLastPlayerId(player,turn), turn, expressionTextView);
                 new CountDownTimer(60*1000, 1000) {
                     public void onTick(long millisUntilFinished) {
                         chrono.setText(String.valueOf(millisUntilFinished / 1000));
@@ -69,12 +70,7 @@ public class PaintActivity extends AppCompatActivity {
                         StorageInterractionListener sil = new StorageInterractionListener() {
                             @Override
                             public void complete() {
-                                Intent intent = new Intent(thisActivity, DescribeImageActivity.class);
-                                intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
-                                intent.putExtra("playerId",player.getPlayerId());
-                                intent.putExtra("playerName",player.getPlayerName());
-                                intent.putExtra("currentTurn", getIntent().getStringExtra("currentTurn"));
-                                startActivity(intent);
+                                player.setReady(true);
                             }
 
                             @Override
@@ -94,7 +90,13 @@ public class PaintActivity extends AppCompatActivity {
 
             @Override
             public void lunch() {
-
+                player.setReady(false);
+                Intent intent = new Intent(thisActivity, DescribeImageActivity.class);
+                intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
+                intent.putExtra("playerId",player.getPlayerId());
+                intent.putExtra("playerName",player.getPlayerName());
+                intent.putExtra("currentTurn", getIntent().getStringExtra("currentTurn"));
+                startActivity(intent);
             }
         };
         new Room(getIntent().getStringExtra("roomCode"),player, rdl);

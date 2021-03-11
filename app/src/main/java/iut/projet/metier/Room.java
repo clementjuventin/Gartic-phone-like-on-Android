@@ -29,7 +29,7 @@ public class Room {
     private List<Player> players;
     private DatabaseReference roomRef;
 
-    //Rejoin une room et ajoute le joueur dedans
+    //Rejoin une room
     public Room(String roomCode, Player player, RoomDataListener rdl){
         this.roomCode = roomCode;
         players = new ArrayList<>();
@@ -78,7 +78,7 @@ public class Room {
                 if(players.contains(p)){
                     players.set(players.indexOf(p),p);
                 }
-                if(players.size()<3) return;
+                //if(players.size()<3) return;
                 for (Player pyr :players){
                     if(!pyr.isReady()) return;
                 }
@@ -126,5 +126,18 @@ public class Room {
             generatedString[i] = (char) ('A' + random.nextInt(26));
         }
         return String.valueOf(generatedString);
+    }
+    //Retourne l'id du joueur précédent dans l'ordre de jeu (permet de récupérer les informations)
+    public String getLastPlayerId(Player currentPlayer, int turn){
+        /*
+        Log.d("getLastPlayerId","Current playerId:"+currentPlayer.getPlayerId());
+        Log.d("getLastPlayerId","Position:"+players.indexOf(currentPlayer));
+        Log.d("getLastPlayerId","Turn:"+String.valueOf(turn));
+        for(Player p : players){
+            Log.d("getLastPlayerId","Player "+players.indexOf(p)+": "+ p.getPlayerName());
+        }
+        Log.d("getLastPlayerId","Next playerId:"+ players.get((players.indexOf(currentPlayer)+turn-1)%players.size()).getPlayerId());
+        */
+        return players.get((players.indexOf(currentPlayer)+turn-1)%players.size()).getPlayerId();
     }
 }

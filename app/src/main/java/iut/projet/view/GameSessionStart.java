@@ -9,11 +9,14 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 
 import iut.projet.R;
@@ -44,14 +47,12 @@ public class GameSessionStart extends AppCompatActivity {
                         chrono.setText(String.valueOf(millisUntilFinished / 1000));
                     }
                     public void onFinish() {
-                        player.sendExpression(1, ((TextInputLayout) findViewById(R.id.gamesessionstart_expression_player_name)).getEditText().getText().toString());
-                        FirebaseDatabaseHelper.setLocked(player.getCurrentRoom().getRoomCode(), "1");
-                        Intent intent = new Intent(thisActivity, PaintActivity.class);
-                        intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
-                        intent.putExtra("playerId",player.getPlayerId());
-                        intent.putExtra("playerName",player.getPlayerName());
-                        intent.putExtra("currentTurn","1");
-                        startActivity(intent);
+                        player.sendExpression(1, ((TextInputLayout) findViewById(R.id.gamesessionstart_expression_player_name)).getEditText().getText().toString()).addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+                                player.setReady(true);
+                            }
+                        });
                     }
                 }.start();
             }
@@ -61,10 +62,16 @@ public class GameSessionStart extends AppCompatActivity {
             }
             @Override
             public void lunch() {
-
+                Intent intent = new Intent(thisActivity, PaintActivity.class);
+                player.setReady(false);
+                intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
+                intent.putExtra("playerId",player.getPlayerId());
+                intent.putExtra("playerName",player.getPlayerName());
+                intent.putExtra("currentTurn","1");
+                startActivity(intent);
             }
         };
-        player = new Player(getIntent().getStringExtra("playerName"), getIntent().getStringExtra("playerId"), true);
+        player = new Player(getIntent().getStringExtra("playerName"), getIntent().getStringExtra("playerId"), false);
         new Room(getIntent().getStringExtra("roomCode"),player,rdl);
     }
 }

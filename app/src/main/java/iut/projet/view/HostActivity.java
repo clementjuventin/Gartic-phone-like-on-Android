@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import iut.projet.R;
+import iut.projet.metier.FirebaseDatabaseHelper;
 import iut.projet.metier.FirebaseStorageHelper;
 import iut.projet.metier.Player;
 import iut.projet.metier.Room;
@@ -55,6 +56,8 @@ public class HostActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void lunch() {
+                FirebaseDatabaseHelper.setLocked(player.getCurrentRoom().getRoomCode(), "1");
+                player.setReady(false);
                 Intent intent = new Intent(thisActivity, GameSessionStart.class);
                 intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
                 intent.putExtra("playerId",player.getPlayerId());

@@ -12,9 +12,12 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -48,22 +51,32 @@ public class DescribeImageActivity extends AppCompatActivity {
         chrono = ((TextView) findViewById(R.id.describe_image_activity_chrono));
         AppCompatActivity thisActivity = this;
 
+        StorageConnectionListener scl = new StorageConnectionListener() {
+            @Override
+            public void loadUri(Uri uri) {
+                LoadImage loadImage = new LoadImage(imageView);
+                loadImage.execute(uri.toString());
+            }
+        };
+
         RoomDataListener rdl = new RoomDataListener() {
             @Override
             public void initialize() {
+                //Permet de récupérer les images
+                int turn = Integer.parseInt(getIntent().getStringExtra("currentTurn"));
+                //Log.d("DEV", "SupposedName: "+player.getCurrentRoom().getLastPlayerId(player,turn)+String.valueOf(turn));
+                FirebaseStorageHelper.getImage(player.getCurrentRoom().getLastPlayerId(player,turn)+String.valueOf(turn), scl);
                 new CountDownTimer(30*1000, 1000) {
                     public void onTick(long millisUntilFinished) {
                         chrono.setText(String.valueOf(millisUntilFinished / 1000));
                     }
                     public void onFinish() {
-                        int turn = Integer.parseInt(getIntent().getStringExtra("currentTurn"))+1;
-                        player.sendExpression(turn, ((TextInputLayout) findViewById(R.id.describe_image_activity_player_suggestion)).getEditText().getText().toString());
-                        Intent intent = new Intent(thisActivity, PaintActivity.class);
-                        intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
-                        intent.putExtra("playerId",player.getPlayerId());
-                        intent.putExtra("playerName",player.getPlayerName());
-                        intent.putExtra("currentTurn",String.valueOf(turn));
-                        startActivity(intent);
+                        player.sendExpression(turn+1, ((TextInputLayout) findViewById(R.id.describe_image_activity_player_suggestion)).getEditText().getText().toString()).addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+                                player.setReady(true);
+                            }
+                        });
                     }
                 }.start();
             }
@@ -73,21 +86,18 @@ public class DescribeImageActivity extends AppCompatActivity {
             }
             @Override
             public void lunch() {
-
+                int turn = Integer.parseInt(getIntent().getStringExtra("currentTurn"))+1;
+                player.setReady(false);
+                Intent intent = new Intent(thisActivity, PaintActivity.class);
+                intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
+                intent.putExtra("playerId",player.getPlayerId());
+                intent.putExtra("playerName",player.getPlayerName());
+                intent.putExtra("currentTurn",String.valueOf(turn));
+                startActivity(intent);
             }
         };
 
-        player = new Player( getIntent().getStringExtra("playerName"), getIntent().getStringExtra("playerId"),true);
+        player = new Player( getIntent().getStringExtra("playerName"), getIntent().getStringExtra("playerId"),false);
         new Room(getIntent().getStringExtra("roomCode"),player,rdl);
-
-        StorageConnectionListener scl = new StorageConnectionListener() {
-            @Override
-            public void loadUri(Uri uri) {
-                LoadImage loadImage = new LoadImage(imageView);
-                loadImage.execute(uri.toString());
-            }
-        };
-        //Permet de récupérer les images
-        FirebaseStorageHelper.getImage(player.getPlayerId()+getIntent().getStringExtra("currentTurn"), scl);
     }
 }
