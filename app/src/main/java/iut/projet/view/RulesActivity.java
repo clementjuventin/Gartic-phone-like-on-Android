@@ -51,22 +51,26 @@ public class RulesActivity extends AppCompatActivity implements View.OnClickList
                 if (cpt == 2) {
                     Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.rule1);
                     img.setImageBitmap(bMap);
-                }
-                if (cpt == 3) {
+                }if (cpt == 3) {
                     Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.rule2);
+                    img.setImageBitmap(bMap);
+                }if (cpt == 4) {
+                    Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.rule3);
                     img.setImageBitmap(bMap);
                 }
                 cpt--;
             }
-        }
-        if (v.getId() == R.id.rules_page_next) {
-            if (cpt != 3) {
+        }if (v.getId() == R.id.rules_page_next) {
+            if (cpt != 4) {
                 if (cpt == 1) {
                     Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.rule2);
                     img.setImageBitmap(bMap);
                 }
                 if (cpt == 2) {
                     Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.rule3);
+                    img.setImageBitmap(bMap);
+                }if (cpt == 3) {
+                    Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.rule4);
                     img.setImageBitmap(bMap);
                 }
                 cpt++;
