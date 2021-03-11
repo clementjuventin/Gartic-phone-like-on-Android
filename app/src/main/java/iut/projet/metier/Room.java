@@ -138,6 +138,6 @@ public class Room {
         }
         Log.d("getLastPlayerId","Next playerId:"+ players.get((players.indexOf(currentPlayer)+turn-1)%players.size()).getPlayerId());
         */
-        return players.get((players.indexOf(currentPlayer)+turn-1)%players.size()).getPlayerId();
+        return players.get((players.indexOf(currentPlayer)+turn)%players.size()).getPlayerId();
     }
 }
