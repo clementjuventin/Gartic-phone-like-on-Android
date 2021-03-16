@@ -1,4 +1,4 @@
-package iut.projet.metier;
+package iut.projet.controller;
 
 import android.net.Uri;
 

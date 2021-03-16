@@ -1,6 +1,4 @@
-package iut.projet.metier;
-
-import android.util.Log;
+package iut.projet.model.metier;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,9 +7,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
+
+import iut.projet.controller.FirebaseDatabaseHelper;
+import iut.projet.controller.RoomDataListener;
+import iut.projet.controller.RoomStateListener;
 
 public class Player {
     //Identificateur du joueur

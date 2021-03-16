@@ -1,4 +1,4 @@
-package iut.projet.paint;
+package iut.projet.model.paint;
 
 import android.graphics.Path;
 

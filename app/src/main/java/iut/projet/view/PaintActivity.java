@@ -1,35 +1,25 @@
 package iut.projet.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import iut.projet.R;
-import iut.projet.metier.FirebaseDatabaseHelper;
-import iut.projet.metier.FirebaseStorageHelper;
-import iut.projet.metier.Player;
-import iut.projet.metier.Room;
-import iut.projet.metier.RoomDataListener;
-import iut.projet.metier.StorageInterractionListener;
-import iut.projet.paint.PaintView;
+import iut.projet.controller.FirebaseDatabaseHelper;
+import iut.projet.controller.FirebaseStorageHelper;
+import iut.projet.model.metier.Player;
+import iut.projet.model.metier.Room;
+import iut.projet.controller.RoomDataListener;
+import iut.projet.controller.StorageInterractionListener;
+import iut.projet.model.paint.PaintView;
 
 public class PaintActivity extends AppCompatActivity {
 
@@ -89,7 +79,7 @@ public class PaintActivity extends AppCompatActivity {
             }
 
             @Override
-            public void lunch() {
+            public void launch() {
                 player.setReady(false);
                 Intent intent = new Intent(thisActivity, DescribeImageActivity.class);
                 intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());

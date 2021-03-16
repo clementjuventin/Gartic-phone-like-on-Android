@@ -1,29 +1,24 @@
 package iut.projet.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 
 import iut.projet.R;
-import iut.projet.metier.FirebaseDatabaseHelper;
-import iut.projet.metier.Player;
-import iut.projet.metier.Room;
-import iut.projet.metier.RoomDataListener;
+import iut.projet.model.metier.Player;
+import iut.projet.model.metier.Room;
+import iut.projet.controller.RoomDataListener;
 
 public class GameSessionStart extends AppCompatActivity {
     private Player player;
@@ -61,7 +56,7 @@ public class GameSessionStart extends AppCompatActivity {
 
             }
             @Override
-            public void lunch() {
+            public void launch() {
                 Intent intent = new Intent(thisActivity, PaintActivity.class);
                 player.setReady(false);
                 intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());

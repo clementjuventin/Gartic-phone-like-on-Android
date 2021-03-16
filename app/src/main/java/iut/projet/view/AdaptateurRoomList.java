@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import iut.projet.R;
-import iut.projet.metier.Player;
+import iut.projet.model.metier.Player;
 
 public class AdaptateurRoomList extends RecyclerView.Adapter {
     private List<Player> playerList;

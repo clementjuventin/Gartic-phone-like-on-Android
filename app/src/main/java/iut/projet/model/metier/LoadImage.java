@@ -1,4 +1,4 @@
-package iut.projet.metier;
+package iut.projet.model.metier;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

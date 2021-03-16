@@ -1,4 +1,4 @@
-package iut.projet.metier;
+package iut.projet.controller;
 
 public interface RoomStateListener {
     public void roomNotExist();

@@ -1,4 +1,4 @@
-package iut.projet.metier;
+package iut.projet.model.metier;
 
 public class Drawing {
     private String description;

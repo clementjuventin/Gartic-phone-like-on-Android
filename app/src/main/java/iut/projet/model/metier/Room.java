@@ -1,6 +1,4 @@
-package iut.projet.metier;
-
-import android.util.Log;
+package iut.projet.model.metier;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +13,9 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import iut.projet.controller.FirebaseDatabaseHelper;
+import iut.projet.controller.RoomDataListener;
 
 public class Room {
     //Identifiant de la room dans firebase database
@@ -83,7 +84,7 @@ public class Room {
                     if(!pyr.isReady()) return;
                 }
                 if(host!=null) FirebaseDatabaseHelper.setLocked(roomCode, "1");
-                rdl.lunch();
+                rdl.launch();
             }
 
             @Override

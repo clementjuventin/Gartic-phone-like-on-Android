@@ -2,12 +2,8 @@ package iut.projet.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -16,17 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import iut.projet.R;
-import iut.projet.metier.FirebaseDatabaseHelper;
-import iut.projet.metier.FirebaseStorageHelper;
-import iut.projet.metier.Player;
-import iut.projet.metier.Room;
-import iut.projet.metier.RoomDataListener;
-import iut.projet.metier.RoomStateListener;
+import iut.projet.controller.FirebaseDatabaseHelper;
+import iut.projet.model.metier.Player;
+import iut.projet.controller.RoomDataListener;
 
 public class HostActivity extends AppCompatActivity implements View.OnClickListener {
     private Player player;
@@ -55,7 +44,7 @@ public class HostActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void lunch() {
+            public void launch() {
                 FirebaseDatabaseHelper.setLocked(player.getCurrentRoom().getRoomCode(), "1");
                 player.setReady(false);
                 Intent intent = new Intent(thisActivity, GameSessionStart.class);
