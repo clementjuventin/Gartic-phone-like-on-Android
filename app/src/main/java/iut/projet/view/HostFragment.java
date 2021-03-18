@@ -41,11 +41,16 @@ public class HostFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        player.getCurrentRoom().disableRoomEvents();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         //Liste des joueurs
         RecyclerView listView = getView().findViewById(R.id.host_activity_listView);
-        //Fragment frag = this;
         rdl = new RoomDataListener() {
             @Override
             public void initialize() {
@@ -65,9 +70,7 @@ public class HostFragment extends Fragment implements View.OnClickListener {
                 FirebaseDatabaseHelper.setLocked(player.getCurrentRoom().getRoomCode(), "1");
                 player.setReady(false);
 
-                //getActivity().getSupportFragmentManager().beginTransaction().remove(frag);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new GameStartFragment(player)).commit();
-
             }
         };
         //Création du joueur

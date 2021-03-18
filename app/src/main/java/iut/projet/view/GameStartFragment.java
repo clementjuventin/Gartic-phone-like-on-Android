@@ -31,7 +31,11 @@ public class GameStartFragment extends Fragment {
         super(R.layout.game_session_start);
         this.player = player;
     }
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        player.getCurrentRoom().disableRoomEvents();
+    }
     @Override
     public void onStart() {
         super.onStart();
@@ -61,7 +65,7 @@ public class GameStartFragment extends Fragment {
             }
             @Override
             public void launch() {
-                Intent intent = new Intent(getActivity(), PaintFragment.class);
+                player.getCurrentRoom().disableRoomEvents();
                 player.setReady(false);
                 getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new PaintFragment(player, 1), null).commit();
             }

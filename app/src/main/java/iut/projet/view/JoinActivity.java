@@ -41,7 +41,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.joinActivity_entrer_button) {
             Player p = new Player(getIntent().getStringExtra("playerName"));
             String roomCode;
-            roomCode = ((TextInputLayout)findViewById(R.id.joinActivity_code)).getEditText().getText().toString();
+            roomCode = ((TextInputLayout)findViewById(R.id.joinActivity_code)).getEditText().getText().toString().toUpperCase();
 
             AppCompatActivity thisActivity = this;
             RoomStateListener roomStateListener = new RoomStateListener() {

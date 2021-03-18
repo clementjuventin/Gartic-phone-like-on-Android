@@ -36,35 +36,29 @@
         <Button
             android:id="@+id/paint_activity_blueButton"
             style="@style/ColoredButton"
-            android:backgroundTint="@color/BLUE"
-            android:onClick="changeColorToBlue"/>
+            android:backgroundTint="@color/BLUE"/>
         <Button
             android:id="@+id/paint_activity_greenButton"
             style="@style/ColoredButton"
-            android:backgroundTint="@color/GREEN"
-            android:onClick="changeColorToGreen"/>
+            android:backgroundTint="@color/GREEN"/>
 
         <Button
             android:id="@+id/paint_activity_redButton"
             style="@style/ColoredButton"
-            android:backgroundTint="@color/RED"
-            android:onClick="changeColorToRed"/>
+            android:backgroundTint="@color/RED"/>
         <Button
             android:id="@+id/paint_activity_yellowButton"
             style="@style/ColoredButton"
-            android:backgroundTint="@color/YELLOW"
-            android:onClick="changeColorToYellow"/>
+            android:backgroundTint="@color/YELLOW"/>
         <Button
             android:id="@+id/paint_activity_blackButton"
             style="@style/ColoredButton"
-            android:backgroundTint="@color/BLACK"
-            android:onClick="changeColorToBlack"/>
+            android:backgroundTint="@color/BLACK"/>
 
         <Button
             android:id="@+id/paint_activity_backButton"
             style="@style/ColoredButton"
-            android:text="@string/back_arrow"
-            android:onClick="back"/>
+            android:text="@string/back_arrow"/>
     </LinearLayout>
 
     <iut.projet.model.paint.PaintView

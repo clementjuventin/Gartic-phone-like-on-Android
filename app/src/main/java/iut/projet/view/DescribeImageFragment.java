@@ -37,6 +37,11 @@ public class DescribeImageFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        player.getCurrentRoom().disableRoomEvents();
+    }
+    @Override
     public void onStart() {
         super.onStart();
         imageView = getView().findViewById(R.id.describe_image_activity_image);
@@ -78,8 +83,8 @@ public class DescribeImageFragment extends Fragment {
             @Override
             public void launch() {
                 player.setReady(false);
+                player.getCurrentRoom().disableRoomEvents();
                 int playerSize = player.getCurrentRoom().getPlayers().size();
-                Intent intent;
                 if(playerSize/2+playerSize%2==turn){
                     getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ResultStartFragment(player, 0), null).commit();
                 }

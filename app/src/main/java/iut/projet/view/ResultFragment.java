@@ -34,7 +34,11 @@ public class ResultFragment extends Fragment {
         this.turn = turn;
         this.period = period;
     }
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        player.getCurrentRoom().disableRoomEvents();
+    }
     @Override
     public void onStart() {
         super.onStart();
@@ -83,6 +87,7 @@ public class ResultFragment extends Fragment {
             @Override
             public void launch() {
                 player.setReady(false);
+                player.getCurrentRoom().disableRoomEvents();
                 int playersCount = player.getCurrentRoom().getPlayers().size();
                 if(period == playersCount-1){
                     Toast.makeText(getContext(), R.string.endOfTheGame, Toast.LENGTH_SHORT).show();

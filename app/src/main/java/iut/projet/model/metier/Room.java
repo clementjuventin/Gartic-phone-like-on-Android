@@ -29,6 +29,7 @@ public class Room {
 
     private List<Player> players;
     private DatabaseReference roomRef;
+    private ChildEventListener cel;
 
     //Rejoin une room
     public Room(String roomCode, Player player, RoomDataListener rdl){
@@ -63,7 +64,7 @@ public class Room {
     //Gere les évennements qui peuvent arriver sur les joueurs de la room
     public void handleRoomEvents(DatabaseReference roomRef, RoomDataListener rdl){
         this.roomRef = roomRef;
-        this.roomRef.addChildEventListener(new ChildEventListener() {
+        cel = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if(snapshot.child("playerName").getValue()!=null&&snapshot.child("playerId").getValue()!=null){
@@ -107,23 +108,16 @@ public class Room {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        this.roomRef.addChildEventListener(cel);
+    }
+    //Disable listener
+    public void disableRoomEvents(){
+        this.roomRef.removeEventListener(cel);
     }
 
-    public void addPlayer(Player player){
-        if(players.contains(player)){
-            throw new IllegalStateException("Un joueur ne peut être qu'une fois dans une salle.");
-        }
-        players.add(player);
-    }
-    public void deletePlayer(Player player){
-        if(!players.contains(player)){
-            throw new IllegalStateException("Le joueur que l'on souhaite supprimé n'est pas dans la salle.");
-        }
-        players.remove(player);
-    }
     private String generateRoomCode(){
-        int stringLen = 8;
+        int stringLen = 6;
         Random random = new Random();
         char[] generatedString = new char [stringLen];
 

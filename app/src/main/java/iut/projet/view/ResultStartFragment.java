@@ -29,7 +29,11 @@ public class ResultStartFragment extends Fragment {
         this.turn = 1;
         this.period = period;
     }
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        player.getCurrentRoom().disableRoomEvents();
+    }
     @Override
     public void onStart() {
         super.onStart();
@@ -63,6 +67,7 @@ public class ResultStartFragment extends Fragment {
             @Override
             public void launch() {
                 player.setReady(false);
+                player.getCurrentRoom().disableRoomEvents();
                 getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ResultFragment(player, turn, period), null).commit();
             }
         };

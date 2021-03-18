@@ -8,22 +8,26 @@ import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import iut.projet.R;
 import iut.projet.controller.FirebaseDatabaseHelper;
 import iut.projet.controller.FirebaseStorageHelper;
+import iut.projet.controller.RoomStateListener;
 import iut.projet.model.metier.Player;
 import iut.projet.model.metier.Room;
 import iut.projet.controller.RoomDataListener;
 import iut.projet.controller.StorageInterractionListener;
 import iut.projet.model.paint.PaintView;
 
-public class PaintFragment extends Fragment {
+public class PaintFragment extends Fragment implements View.OnClickListener{
 
     private PaintView paintView;
 
@@ -41,6 +45,13 @@ public class PaintFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        getView().findViewById(R.id.paint_activity_blueButton).setOnClickListener(this);
+        getView().findViewById(R.id.paint_activity_backButton).setOnClickListener(this);
+        getView().findViewById(R.id.paint_activity_blackButton).setOnClickListener(this);
+        getView().findViewById(R.id.paint_activity_redButton).setOnClickListener(this);
+        getView().findViewById(R.id.paint_activity_greenButton).setOnClickListener(this);
+        getView().findViewById(R.id.paint_activity_yellowButton).setOnClickListener(this);
 
         //Paint view settings
         paintView = (PaintView) getView().findViewById(R.id.paintView);
@@ -86,34 +97,38 @@ public class PaintFragment extends Fragment {
             @Override
             public void launch() {
                 player.setReady(false);
+                player.getCurrentRoom().disableRoomEvents();
                 getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new DescribeImageFragment(player, turn), null).commit();
             }
         };
         new Room(player.getCurrentRoom().getRoomCode(), player, rdl);
     }
-
-    public void changeColorToBlue(View view) {
-        paintView.setCurrentColor(Color.BLUE);
+    @Override
+    public void onStop() {
+        super.onStop();
+        player.getCurrentRoom().disableRoomEvents();
     }
-
-    public void changeColorToGreen(View view) {
-        paintView.setCurrentColor(Color.GREEN);
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.paint_activity_blueButton:
+                paintView.setCurrentColor(Color.BLUE);
+                break;
+            case R.id.paint_activity_greenButton:
+                paintView.setCurrentColor(Color.GREEN);
+                break;
+            case R.id.paint_activity_redButton:
+                paintView.setCurrentColor(Color.RED);
+                break;
+            case R.id.paint_activity_blackButton:
+                paintView.setCurrentColor(Color.BLACK);
+                break;
+            case R.id.paint_activity_yellowButton:
+                paintView.setCurrentColor(Color.YELLOW);
+                break;
+            case R.id.paint_activity_backButton:
+                paintView.deleteLastFingerPath();
+                break;
+        }
     }
-
-    public void changeColorToRed(View view) {
-        paintView.setCurrentColor(Color.RED);
-    }
-
-    public void changeColorToYellow(View view) {
-        paintView.setCurrentColor(Color.YELLOW);
-    }
-
-    public void changeColorToBlack(View view) {
-        paintView.setCurrentColor(Color.BLACK);
-    }
-
-    public void back(View view) {
-        paintView.deleteLastFingerPath();
-    }
-
 }
