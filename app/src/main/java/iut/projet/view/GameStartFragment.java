@@ -24,12 +24,14 @@ import iut.projet.controller.RoomDataListener;
 public class GameStartFragment extends Fragment {
     private Player player;
     private TextView chrono;
+    private int turn;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
 
     public GameStartFragment(Player player){
         super(R.layout.game_session_start);
         this.player = player;
+        turn = 1;
     }
     @Override
     public void onStop() {
@@ -50,7 +52,7 @@ public class GameStartFragment extends Fragment {
                         chrono.setText(String.valueOf(millisUntilFinished / 1000));
                     }
                     public void onFinish() {
-                        player.sendExpression(1, ((TextInputLayout) getView().findViewById(R.id.gamesessionstart_expression_player_name)).getEditText().getText().toString()).addOnCompleteListener(new OnCompleteListener() {
+                        player.sendExpression(turn, ((TextInputLayout) getView().findViewById(R.id.gamesessionstart_expression_player_name)).getEditText().getText().toString()).addOnCompleteListener(new OnCompleteListener() {
                             @Override
                             public void onComplete(@NonNull Task task) {
                                 player.setReady(true);
@@ -67,7 +69,7 @@ public class GameStartFragment extends Fragment {
             public void launch() {
                 player.getCurrentRoom().disableRoomEvents();
                 player.setReady(false);
-                getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new PaintFragment(player, 1), null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new PaintFragment(player, turn), null).commit();
             }
         };
         new Room(player.getCurrentRoom().getRoomCode(),player,rdl);

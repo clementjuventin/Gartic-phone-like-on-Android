@@ -127,7 +127,7 @@ public class Room {
         return String.valueOf(generatedString);
     }
     //Retourne l'id du joueur précédent dans l'ordre de jeu (permet de récupérer les informations)
-    public String getLastPlayerId(Player currentPlayer, int turn){
+    public String getLastPlayerId(Player currentPlayer){
         /*
         Log.d("getLastPlayerId","Current playerId:"+currentPlayer.getPlayerId());
         Log.d("getLastPlayerId","Position:"+players.indexOf(currentPlayer));
@@ -137,6 +137,6 @@ public class Room {
         }
         Log.d("getLastPlayerId","Next playerId:"+ players.get((players.indexOf(currentPlayer)+turn-1)%players.size()).getPlayerId());
         */
-        return players.get((players.indexOf(currentPlayer)+turn)%players.size()).getPlayerId();
+        return players.get((players.indexOf(currentPlayer)+1)%players.size()).getPlayerId();
     }
 }

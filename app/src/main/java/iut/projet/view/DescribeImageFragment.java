@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,13 +62,13 @@ public class DescribeImageFragment extends Fragment {
             public void initialize() {
                 //Permet de récupérer les images
                 //Log.d("DEV", "SupposedName: "+player.getCurrentRoom().getLastPlayerId(player,turn)+String.valueOf(turn));
-                FirebaseStorageHelper.getImage(player.getCurrentRoom().getLastPlayerId(player,turn)+String.valueOf(turn), scl);
+                FirebaseStorageHelper.getImage(player.getCurrentRoom().getLastPlayerId(player)+String.valueOf(turn-1), scl);
                 new CountDownTimer(30*1000, 1000) {
                     public void onTick(long millisUntilFinished) {
                         chrono.setText(String.valueOf(millisUntilFinished / 1000));
                     }
                     public void onFinish() {
-                        player.sendExpression(turn+1, ((TextInputLayout) getView().findViewById(R.id.describe_image_activity_player_suggestion)).getEditText().getText().toString()).addOnCompleteListener(new OnCompleteListener() {
+                        player.sendExpression(turn, ((TextInputLayout) getView().findViewById(R.id.describe_image_activity_player_suggestion)).getEditText().getText().toString()).addOnCompleteListener(new OnCompleteListener() {
                             @Override
                             public void onComplete(@NonNull Task task) {
                                 player.setReady(true);
@@ -85,11 +86,14 @@ public class DescribeImageFragment extends Fragment {
                 player.setReady(false);
                 player.getCurrentRoom().disableRoomEvents();
                 int playerSize = player.getCurrentRoom().getPlayers().size();
+                Log.d("dev", "turn"+turn);
+                Log.d("dev", "=="+playerSize/2+playerSize%2);
+                Log.d("dev", "ps "+playerSize);
                 if(playerSize/2+playerSize%2==turn){
                     getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ResultStartFragment(player, 0), null).commit();
                 }
                 else {
-                    getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new PaintFragment(player, turn++), null).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new PaintFragment(player, turn), null).commit();
                 }
             }
         };

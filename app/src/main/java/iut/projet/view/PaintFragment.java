@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,7 +66,7 @@ public class PaintFragment extends Fragment implements View.OnClickListener{
         RoomDataListener rdl = new RoomDataListener() {
             @Override
             public void initialize() {
-                FirebaseDatabaseHelper.getExpression(player.getCurrentRoom().getRoomCode(), player.getCurrentRoom().getLastPlayerId(player, turn), turn, expressionTextView);
+                FirebaseDatabaseHelper.getExpression(player.getCurrentRoom().getRoomCode(), player.getCurrentRoom().getLastPlayerId(player), turn, expressionTextView);
                 new CountDownTimer(60 * 1000, 1000) {
                     public void onTick(long millisUntilFinished) {
                         chrono.setText(String.valueOf(millisUntilFinished / 1000));
@@ -98,7 +99,7 @@ public class PaintFragment extends Fragment implements View.OnClickListener{
             public void launch() {
                 player.setReady(false);
                 player.getCurrentRoom().disableRoomEvents();
-                getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new DescribeImageFragment(player, turn), null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new DescribeImageFragment(player, turn+1), null).commit();
             }
         };
         new Room(player.getCurrentRoom().getRoomCode(), player, rdl);
