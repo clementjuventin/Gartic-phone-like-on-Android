@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import iut.projet.R;
 import iut.projet.controller.FirebaseDatabaseHelper;
@@ -20,23 +23,28 @@ import iut.projet.model.metier.LoadImage;
 import iut.projet.model.metier.Player;
 import iut.projet.model.metier.Room;
 
-public class ResultDisplayActivity extends AppCompatActivity {
+public class ResultFragment extends Fragment {
     private Player player;
     private ImageView imageView;
+    private int turn, period;
+
+    public ResultFragment(Player player,int turn,int period){
+        super(R.layout.result_display_activity);
+        this.player = player;
+        this.turn = turn;
+        this.period = period;
+    }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onStart() {
+        super.onStart();
 
-        setContentView(R.layout.result_display_activity);
+        TextView usernameTv = ((TextView) getView().findViewById(R.id.pseudo_draw_result_display_activity));
+        TextView nextUsernameTv = ((TextView) getView().findViewById(R.id.pseudo_result_display_activity));
+        TextView expressionTv = ((TextView) getView().findViewById(R.id.expression_result_display_activity));
 
-        TextView usernameTv = ((TextView) findViewById(R.id.pseudo_draw_result_display_activity));
-        TextView nextUsernameTv = ((TextView) findViewById(R.id.pseudo_result_display_activity));
-        TextView expressionTv = ((TextView) findViewById(R.id.expression_result_display_activity));
+        imageView = getView().findViewById(R.id.result_display_activity_image);
 
-        imageView = findViewById(R.id.result_display_activity_image);
-
-        AppCompatActivity thisActivity = this;
         StorageConnectionListener scl = new StorageConnectionListener() {
             @Override
             public void loadUri(Uri uri) {
@@ -45,8 +53,6 @@ public class ResultDisplayActivity extends AppCompatActivity {
             }
         };
 
-        int turn = Integer.parseInt(getIntent().getStringExtra("turn"));
-        int period = Integer.parseInt(getIntent().getStringExtra("period"));
         RoomDataListener rdl = new RoomDataListener() {
             @Override
             public void initialize() {
@@ -60,7 +66,7 @@ public class ResultDisplayActivity extends AppCompatActivity {
                             FirebaseDatabaseHelper.getExpression(player.getCurrentRoom().getRoomCode(), player.getCurrentRoom().getPlayers().get((turn+period)%player.getCurrentRoom().getPlayers().size()).getPlayerId(), turn, expressionTv);
                         }
                         if(millisUntilFinished<4001 && millisUntilFinished>999){
-                            Toast.makeText(getApplicationContext(), String.valueOf((int)millisUntilFinished/1000), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), String.valueOf((int)millisUntilFinished/1000), Toast.LENGTH_SHORT).show();
                         }
                     }
                     public void onFinish() {
@@ -79,32 +85,20 @@ public class ResultDisplayActivity extends AppCompatActivity {
                 player.setReady(false);
                 int playersCount = player.getCurrentRoom().getPlayers().size();
                 if(period == playersCount-1){
-                    Toast.makeText(getApplicationContext(), R.string.endOfTheGame, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.endOfTheGame, Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(thisActivity, ActivitePrincipale.class);
+                    Intent intent = new Intent(getActivity(), ActivitePrincipale.class);
                     startActivity(intent);
                 }
                 else if(turn == playersCount/2+playersCount%2){
-                    Intent intent = new Intent(thisActivity, ResultViewStart.class);
-                    intent.putExtra("roomCode", player.getCurrentRoom().getRoomCode());
-                    intent.putExtra("playerName", player.getPlayerName());
-                    intent.putExtra("playerId", player.getPlayerId());
-                    intent.putExtra("period", String.valueOf(period+1));
-                    startActivity(intent);
+                    getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ResultStartFragment(player, period+1), null).commit();
                 }
                 else{
-                    Intent intent = new Intent(thisActivity, ResultDisplayActivity.class);
-                    intent.putExtra("roomCode", player.getCurrentRoom().getRoomCode());
-                    intent.putExtra("playerName", player.getPlayerName());
-                    intent.putExtra("playerId", player.getPlayerId());
-                    intent.putExtra("turn", String.valueOf(turn+1));
-                    intent.putExtra("period", String.valueOf(period));
-                    startActivity(intent);
+                    getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ResultFragment(player, turn+1, period), null).commit();
                 }
             }
         };
 
-        player = new Player(getIntent().getStringExtra("playerName"), getIntent().getStringExtra("playerId"), false);
-        new Room(getIntent().getStringExtra("roomCode"), player, rdl);
+        new Room(player.getCurrentRoom().getRoomCode(), player, rdl);
     }
 }

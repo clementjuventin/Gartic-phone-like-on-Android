@@ -4,36 +4,39 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 
 import iut.projet.R;
-import iut.projet.controller.FirebaseDatabaseHelper;
 import iut.projet.model.metier.Player;
 import iut.projet.model.metier.Room;
 import iut.projet.controller.RoomDataListener;
 
-public class GameSessionStart extends AppCompatActivity {
+public class GameStartFragment extends Fragment {
     private Player player;
     private TextView chrono;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
+
+    public GameStartFragment(Player player){
+        super(R.layout.game_session_start);
+        this.player = player;
+    }
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.game_session_start);
+    public void onStart() {
+        super.onStart();
 
-        chrono = ((TextView) findViewById(R.id.gamesessionstart_expression));
-
-        AppCompatActivity thisActivity = this;
+        chrono = ((TextView) getView().findViewById(R.id.gamesessionstart_expression));
 
         RoomDataListener rdl = new RoomDataListener() {
             @Override
@@ -43,7 +46,7 @@ public class GameSessionStart extends AppCompatActivity {
                         chrono.setText(String.valueOf(millisUntilFinished / 1000));
                     }
                     public void onFinish() {
-                        player.sendExpression(1, ((TextInputLayout) findViewById(R.id.gamesessionstart_expression_player_name)).getEditText().getText().toString()).addOnCompleteListener(new OnCompleteListener() {
+                        player.sendExpression(1, ((TextInputLayout) getView().findViewById(R.id.gamesessionstart_expression_player_name)).getEditText().getText().toString()).addOnCompleteListener(new OnCompleteListener() {
                             @Override
                             public void onComplete(@NonNull Task task) {
                                 player.setReady(true);
@@ -58,23 +61,11 @@ public class GameSessionStart extends AppCompatActivity {
             }
             @Override
             public void launch() {
-                Intent intent = new Intent(thisActivity, PaintActivity.class);
+                Intent intent = new Intent(getActivity(), PaintFragment.class);
                 player.setReady(false);
-                intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
-                intent.putExtra("playerId",player.getPlayerId());
-                intent.putExtra("playerName",player.getPlayerName());
-                intent.putExtra("currentTurn","1");
-                startActivity(intent);
+                getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new PaintFragment(player, 1), null).commit();
             }
         };
-        player = new Player(getIntent().getStringExtra("playerName"), getIntent().getStringExtra("playerId"), false);
-        new Room(getIntent().getStringExtra("roomCode"),player,rdl);
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        FirebaseDatabaseHelper.removePlayer(player, player.getCurrentRoom().getRoomCode());
-        Intent intent = new Intent(this, ActivitePrincipale.class);
-        startActivity(intent);
+        new Room(player.getCurrentRoom().getRoomCode(),player,rdl);
     }
 }

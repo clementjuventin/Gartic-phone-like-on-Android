@@ -52,7 +52,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 
                 @Override
                 public void roomExist() {
-                    Intent intent = new Intent(thisActivity, HostActivity.class);
+                    Intent intent = new Intent(thisActivity, GameActivity.class);
                     intent.putExtra("roomCode",roomCode);
                     intent.putExtra("playerName",p.getPlayerName());
                     startActivity(intent);

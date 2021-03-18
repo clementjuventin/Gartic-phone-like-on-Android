@@ -19,13 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.JoinActivity" android:theme="@style/AppTheme" android:parentActivityName=".view.ActivitePrincipale"/>
-        <activity android:name=".view.HostActivity" android:theme="@style/AppTheme"/>
-        <activity android:name=".view.PaintActivity" android:theme="@style/AppTheme"/>
+        <activity android:name=".view.GameActivity" android:theme="@style/AppTheme"/>
         <activity android:name=".view.RulesActivity" android:theme="@style/AppTheme" android:parentActivityName=".view.ActivitePrincipale"/>
-        <activity android:name=".view.DescribeImageActivity" android:theme="@style/AppTheme"/>
-        <activity android:name=".view.GameSessionStart" android:theme="@style/AppTheme"/>
-        <activity android:name=".view.ResultDisplayActivity" android:theme="@style/AppTheme"/>
-        <activity android:name=".view.ResultViewStart" android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

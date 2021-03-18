@@ -4,17 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
-
-import org.w3c.dom.Text;
 
 import iut.projet.R;
 
@@ -29,6 +25,7 @@ public class ActivitePrincipale extends AppCompatActivity implements View.OnClic
         public static String getName() {return name;}
 
     private SharedPreferences preferences;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +50,7 @@ public class ActivitePrincipale extends AppCompatActivity implements View.OnClic
         name = inputText.getEditText().getText().toString();
         if (v.getId() == R.id.host) {
             String name = ((TextInputLayout)findViewById(R.id.activite_principale_player_name)).getEditText().getText().toString();
-            Intent intent = new Intent(this, HostActivity.class);
+            Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("playerName",name);
 
             updatePreferencesForName(name);
