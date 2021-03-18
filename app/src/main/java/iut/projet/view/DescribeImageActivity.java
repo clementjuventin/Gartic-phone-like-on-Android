@@ -24,7 +24,7 @@ import iut.projet.controller.RoomDataListener;
 import iut.projet.controller.StorageConnectionListener;
 
 public class DescribeImageActivity extends AppCompatActivity {
-    ImageView imageView;
+    private ImageView imageView;
     private Player player;
     private TextView chrono;
 

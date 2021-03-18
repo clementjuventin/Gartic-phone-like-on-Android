@@ -17,7 +17,7 @@ public class FirebaseDatabaseHelper {
 
     //Permet de créer une room à partir d'un code et d'un host
     public static DatabaseReference createRoom(String roomCode, Player host){
-        DatabaseReference roomRef = database.getReference(roomCode);//->debug "ABC");//
+        DatabaseReference roomRef = database.getReference("ABC");//roomCode);//->debug
         String key = roomRef.push().getKey();
         host.setPlayerId(key);
 

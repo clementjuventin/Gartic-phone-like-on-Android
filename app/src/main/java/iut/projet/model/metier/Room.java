@@ -79,7 +79,7 @@ public class Room {
                 if(players.contains(p)){
                     players.set(players.indexOf(p),p);
                 }
-                if(players.size()<3) return;
+                //if(players.size()<3) return;
                 for (Player pyr :players){
                     if(!pyr.isReady()) return;
                 }
