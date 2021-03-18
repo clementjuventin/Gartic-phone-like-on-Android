@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjetAndroid">
 
-        <activity android:name=".view.ResultViewStart" android:theme="@style/AppTheme">
+        <activity android:name=".view.ActivitePrincipale" android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -25,6 +25,7 @@
         <activity android:name=".view.DescribeImageActivity" android:theme="@style/AppTheme"/>
         <activity android:name=".view.GameSessionStart" android:theme="@style/AppTheme"/>
         <activity android:name=".view.ResultDisplayActivity" android:theme="@style/AppTheme"/>
+        <activity android:name=".view.ResultViewStart" android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

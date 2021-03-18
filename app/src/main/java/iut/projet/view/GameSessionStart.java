@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 
 import iut.projet.R;
+import iut.projet.controller.FirebaseDatabaseHelper;
 import iut.projet.model.metier.Player;
 import iut.projet.model.metier.Room;
 import iut.projet.controller.RoomDataListener;
@@ -68,5 +69,12 @@ public class GameSessionStart extends AppCompatActivity {
         };
         player = new Player(getIntent().getStringExtra("playerName"), getIntent().getStringExtra("playerId"), false);
         new Room(getIntent().getStringExtra("roomCode"),player,rdl);
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseDatabaseHelper.removePlayer(player, player.getCurrentRoom().getRoomCode());
+        Intent intent = new Intent(this, ActivitePrincipale.class);
+        startActivity(intent);
     }
 }

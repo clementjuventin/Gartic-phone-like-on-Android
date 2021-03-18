@@ -81,6 +81,7 @@ public class PaintActivity extends AppCompatActivity {
             @Override
             public void launch() {
                 player.setReady(false);
+
                 Intent intent = new Intent(thisActivity, DescribeImageActivity.class);
                 intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
                 intent.putExtra("playerId",player.getPlayerId());
@@ -116,4 +117,11 @@ public class PaintActivity extends AppCompatActivity {
         paintView.deleteLastFingerPath();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseDatabaseHelper.removePlayer(player, player.getCurrentRoom().getRoomCode());
+        Intent intent = new Intent(this, ActivitePrincipale.class);
+        startActivity(intent);
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 
 import iut.projet.R;
+import iut.projet.controller.FirebaseDatabaseHelper;
 import iut.projet.controller.FirebaseStorageHelper;
 import iut.projet.model.metier.LoadImage;
 import iut.projet.model.metier.Player;
@@ -72,18 +74,36 @@ public class DescribeImageActivity extends AppCompatActivity {
             }
             @Override
             public void launch() {
-                int turn = Integer.parseInt(getIntent().getStringExtra("currentTurn"))+1;
-                player.setReady(false);
-                Intent intent = new Intent(thisActivity, PaintActivity.class);
-                intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
-                intent.putExtra("playerId",player.getPlayerId());
-                intent.putExtra("playerName",player.getPlayerName());
-                intent.putExtra("currentTurn",String.valueOf(turn));
-                startActivity(intent);
+                int turn = Integer.valueOf(getIntent().getStringExtra("currentTurn"));
+                int playerSize = player.getCurrentRoom().getPlayers().size();
+                if(playerSize/2+playerSize%2==turn){
+                    Intent intent = new Intent(thisActivity, ResultViewStart.class);
+                    intent.putExtra("roomCode",player.getCurrentRoom().getRoomCode());
+                    intent.putExtra("playerId",player.getPlayerId());
+                    intent.putExtra("playerName",player.getPlayerName());
+                    intent.putExtra("period", String.valueOf(0));
+                    startActivity(intent);
+                }
+                else {
+                    player.setReady(false);
+                    Intent intent = new Intent(thisActivity, PaintActivity.class);
+                    intent.putExtra("roomCode", player.getCurrentRoom().getRoomCode());
+                    intent.putExtra("playerId", player.getPlayerId());
+                    intent.putExtra("playerName", player.getPlayerName());
+                    intent.putExtra("currentTurn", String.valueOf(turn+1));
+                    startActivity(intent);
+                }
             }
         };
 
         player = new Player( getIntent().getStringExtra("playerName"), getIntent().getStringExtra("playerId"),false);
         new Room(getIntent().getStringExtra("roomCode"),player,rdl);
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseDatabaseHelper.removePlayer(player, player.getCurrentRoom().getRoomCode());
+        Intent intent = new Intent(this, ActivitePrincipale.class);
+        startActivity(intent);
     }
 }

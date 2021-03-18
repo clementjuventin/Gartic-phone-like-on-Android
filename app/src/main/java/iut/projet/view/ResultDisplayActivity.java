@@ -3,9 +3,10 @@ package iut.projet.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.CountDownTimer;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,8 @@ public class ResultDisplayActivity extends AppCompatActivity {
         setContentView(R.layout.result_display_activity);
 
         TextView usernameTv = ((TextView) findViewById(R.id.pseudo_draw_result_display_activity));
+        TextView nextUsernameTv = ((TextView) findViewById(R.id.pseudo_result_display_activity));
+        TextView expressionTv = ((TextView) findViewById(R.id.expression_result_display_activity));
 
         imageView = findViewById(R.id.result_display_activity_image);
 
@@ -47,9 +50,23 @@ public class ResultDisplayActivity extends AppCompatActivity {
         RoomDataListener rdl = new RoomDataListener() {
             @Override
             public void initialize() {
-                usernameTv.setText(player.getCurrentRoom().getPlayers().get(turn+period).getPlayerName());
+                usernameTv.setText(player.getCurrentRoom().getPlayers().get((turn+period)%player.getCurrentRoom().getPlayers().size()).getPlayerName());
 
-                FirebaseStorageHelper.getImage(player.getCurrentRoom().getPlayers().get(turn+period).getPlayerId() + String.valueOf(turn), scl);
+                FirebaseStorageHelper.getImage(player.getCurrentRoom().getPlayers().get((turn+period)%player.getCurrentRoom().getPlayers().size()).getPlayerId() + String.valueOf(turn), scl);
+                new CountDownTimer(20*1000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        if(millisUntilFinished<10001){
+                            nextUsernameTv.setText(player.getCurrentRoom().getPlayers().get((turn+period+1)%player.getCurrentRoom().getPlayers().size()).getPlayerName());
+                            FirebaseDatabaseHelper.getExpression(player.getCurrentRoom().getRoomCode(), player.getCurrentRoom().getPlayers().get((turn+period)%player.getCurrentRoom().getPlayers().size()).getPlayerId(), turn, expressionTv);
+                        }
+                        if(millisUntilFinished<4001 && millisUntilFinished>999){
+                            Toast.makeText(getApplicationContext(), String.valueOf((int)millisUntilFinished/1000), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    public void onFinish() {
+                        player.setReady(true);
+                    }
+                }.start();
             }
 
             @Override
@@ -59,8 +76,15 @@ public class ResultDisplayActivity extends AppCompatActivity {
 
             @Override
             public void launch() {
+                player.setReady(false);
                 int playersCount = player.getCurrentRoom().getPlayers().size();
-                if(turn == playersCount/2+playersCount%2){
+                if(period == playersCount-1){
+                    Toast.makeText(getApplicationContext(), R.string.endOfTheGame, Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(thisActivity, ActivitePrincipale.class);
+                    startActivity(intent);
+                }
+                else if(turn == playersCount/2+playersCount%2){
                     Intent intent = new Intent(thisActivity, ResultViewStart.class);
                     intent.putExtra("roomCode", player.getCurrentRoom().getRoomCode());
                     intent.putExtra("playerName", player.getPlayerName());
@@ -68,7 +92,7 @@ public class ResultDisplayActivity extends AppCompatActivity {
                     intent.putExtra("period", String.valueOf(period+1));
                     startActivity(intent);
                 }
-                else {
+                else{
                     Intent intent = new Intent(thisActivity, ResultDisplayActivity.class);
                     intent.putExtra("roomCode", player.getCurrentRoom().getRoomCode());
                     intent.putExtra("playerName", player.getPlayerName());

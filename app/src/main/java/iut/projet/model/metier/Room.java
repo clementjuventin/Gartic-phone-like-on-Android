@@ -66,11 +66,13 @@ public class Room {
         this.roomRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Player p = new Player((String) snapshot.child("playerName").getValue(), (String) snapshot.child("playerId").getValue(), ((String) snapshot.child("ready").getValue()).equals("0")?false:true);
-                if(!players.contains(p)){
-                    players.add(p);
+                if(snapshot.child("playerName").getValue()!=null&&snapshot.child("playerId").getValue()!=null){
+                    Player p = new Player((String) snapshot.child("playerName").getValue(), (String) snapshot.child("playerId").getValue(), ((String) snapshot.child("ready").getValue()).equals("0")?false:true);
+                    if(!players.contains(p)){
+                        players.add(p);
+                    }
+                    rdl.update();//On update uniquement si la modification concerne l'ajout ou la suppression d'un joueur
                 }
-                rdl.update();
             }
 
             @Override
@@ -79,7 +81,7 @@ public class Room {
                 if(players.contains(p)){
                     players.set(players.indexOf(p),p);
                 }
-                //if(players.size()<3) return;
+                if(players.size()<3) return;
                 for (Player pyr :players){
                     if(!pyr.isReady()) return;
                 }
@@ -89,9 +91,11 @@ public class Room {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                Player p = new Player((String) snapshot.child("playerName").getValue(), (String) snapshot.child("playerId").getValue(),((String) snapshot.child("ready").getValue()).equals("0")?false:true);
-                players.remove(p);
-                rdl.update();
+                if(snapshot.child("playerName").getValue()!=null&&snapshot.child("playerId").getValue()!=null) {
+                    Player p = new Player((String) snapshot.child("playerName").getValue(), (String) snapshot.child("playerId").getValue(), ((String) snapshot.child("ready").getValue()).equals("0") ? false : true);
+                    players.remove(p);
+                    rdl.update();
+                }
             }
 
             @Override

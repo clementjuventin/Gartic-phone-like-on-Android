@@ -1,5 +1,6 @@
 package iut.projet.controller;
 
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,7 +18,7 @@ public class FirebaseDatabaseHelper {
 
     //Permet de créer une room à partir d'un code et d'un host
     public static DatabaseReference createRoom(String roomCode, Player host){
-        DatabaseReference roomRef = database.getReference("ABC");//roomCode);//->debug
+        DatabaseReference roomRef = database.getReference(roomCode);//->debug"ABC");//
         String key = roomRef.push().getKey();
         host.setPlayerId(key);
 
@@ -88,5 +89,10 @@ public class FirebaseDatabaseHelper {
                 textView.setText((String) task.getResult().getValue());
             }
         });
+    }
+    //Supprime le joueur
+    public static void removePlayer(Player player, String roomCode){
+        DatabaseReference roomRef = database.getReference(roomCode);
+        roomRef.child("players").child(player.getPlayerId()).removeValue();
     }
 }
