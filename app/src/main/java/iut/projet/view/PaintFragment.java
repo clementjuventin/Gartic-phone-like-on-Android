@@ -70,6 +70,9 @@ public class PaintFragment extends Fragment implements View.OnClickListener{
                 new CountDownTimer(60 * 1000, 1000) {
                     public void onTick(long millisUntilFinished) {
                         chrono.setText(String.valueOf(millisUntilFinished / 1000));
+                        if(millisUntilFinished<1001){
+                            paintView.setDrawIsEnable(false);
+                        }
                     }
 
                     public void onFinish() {

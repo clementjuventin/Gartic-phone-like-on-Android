@@ -61,7 +61,7 @@ public class ResultFragment extends Fragment {
             @Override
             public void initialize() {
                 //Le joueur dont on va regarder le dessin en réponse à la derniere expression
-                Player p =player.getCurrentRoom().getPlayers().get((turn+period)%player.getCurrentRoom().getPlayers().size());
+                Player p =player.getCurrentRoom().getPlayers().get((turn*2-1+period)%player.getCurrentRoom().getPlayers().size());
                 usernameTv.setText(p.getPlayerName());
 
                 FirebaseStorageHelper.getImage(p.getPlayerId() + String.valueOf(turn), scl);
@@ -69,7 +69,7 @@ public class ResultFragment extends Fragment {
                     public void onTick(long millisUntilFinished) {
                         if(millisUntilFinished<10001){
                             //Le joueur dont on va regarder l'expression en réponse à la dernière image
-                            Player p = player.getCurrentRoom().getPlayers().get((turn+period+1)%player.getCurrentRoom().getPlayers().size());
+                            Player p = player.getCurrentRoom().getPlayers().get((turn*2+period)%player.getCurrentRoom().getPlayers().size());
                             nextUsernameTv.setText(p.getPlayerName());
                             FirebaseDatabaseHelper.getExpression(player.getCurrentRoom().getRoomCode(), p.getPlayerId(), turn+1, expressionTv);
                         }

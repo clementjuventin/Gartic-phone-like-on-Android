@@ -34,6 +34,10 @@ public class PaintView extends View {
         return mBitmap;
     }
 
+    //Permet d'autoriser ou non le dessin
+    private Boolean drawIsEnable;
+    public void setDrawIsEnable(Boolean b){drawIsEnable=b;}
+
     private Canvas mCanvas;
     private Paint mBitmapPaint = new Paint(Paint.DITHER_FLAG);
 
@@ -51,6 +55,7 @@ public class PaintView extends View {
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setXfermode(null);
         mPaint.setAlpha(0xff);
+        drawIsEnable = true;
     }
 
     public void init(DisplayMetrics metrics) {
@@ -116,6 +121,7 @@ public class PaintView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if(!drawIsEnable) return false;
         float x = event.getX();
         float y = event.getY();
 
