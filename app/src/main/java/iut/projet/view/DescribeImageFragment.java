@@ -86,9 +86,6 @@ public class DescribeImageFragment extends Fragment {
                 player.setReady(false);
                 player.getCurrentRoom().disableRoomEvents();
                 int playerSize = player.getCurrentRoom().getPlayers().size();
-                Log.d("dev", "turn"+turn);
-                Log.d("dev", "=="+playerSize/2+playerSize%2);
-                Log.d("dev", "ps "+playerSize);
                 if(playerSize/2+playerSize%2==turn){
                     getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ResultStartFragment(player, 0), null).commit();
                 }

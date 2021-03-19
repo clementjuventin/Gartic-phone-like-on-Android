@@ -60,14 +60,18 @@ public class ResultFragment extends Fragment {
         RoomDataListener rdl = new RoomDataListener() {
             @Override
             public void initialize() {
-                usernameTv.setText(player.getCurrentRoom().getPlayers().get((turn+period)%player.getCurrentRoom().getPlayers().size()).getPlayerName());
+                //Le joueur dont on va regarder le dessin en réponse à la derniere expression
+                Player p =player.getCurrentRoom().getPlayers().get((turn+period)%player.getCurrentRoom().getPlayers().size());
+                usernameTv.setText(p.getPlayerName());
 
-                FirebaseStorageHelper.getImage(player.getCurrentRoom().getPlayers().get((turn+period)%player.getCurrentRoom().getPlayers().size()).getPlayerId() + String.valueOf(turn), scl);
+                FirebaseStorageHelper.getImage(p.getPlayerId() + String.valueOf(turn), scl);
                 new CountDownTimer(20*1000, 1000) {
                     public void onTick(long millisUntilFinished) {
                         if(millisUntilFinished<10001){
-                            nextUsernameTv.setText(player.getCurrentRoom().getPlayers().get((turn+period+1)%player.getCurrentRoom().getPlayers().size()).getPlayerName());
-                            FirebaseDatabaseHelper.getExpression(player.getCurrentRoom().getRoomCode(), player.getCurrentRoom().getPlayers().get((turn+period)%player.getCurrentRoom().getPlayers().size()).getPlayerId(), turn, expressionTv);
+                            //Le joueur dont on va regarder l'expression en réponse à la dernière image
+                            Player p = player.getCurrentRoom().getPlayers().get((turn+period+1)%player.getCurrentRoom().getPlayers().size());
+                            nextUsernameTv.setText(p.getPlayerName());
+                            FirebaseDatabaseHelper.getExpression(player.getCurrentRoom().getRoomCode(), p.getPlayerId(), turn+1, expressionTv);
                         }
                         if(millisUntilFinished<4001 && millisUntilFinished>999){
                             Toast.makeText(getContext(), String.valueOf((int)millisUntilFinished/1000), Toast.LENGTH_SHORT).show();
@@ -95,7 +99,7 @@ public class ResultFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), ActivitePrincipale.class);
                     startActivity(intent);
                 }
-                else if(turn == playersCount/2+playersCount%2){
+                else if(turn+1 == playersCount/2+playersCount%2){
                     getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new ResultStartFragment(player, period+1), null).commit();
                 }
                 else{
