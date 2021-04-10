@@ -38,3 +38,20 @@ https://play.google.com/store/apps/details?id=iut.cours.tp
 * Firebase (Storage, Real-Time)
 * Paint view et gestion du dessin de l'utilisateur
 * Fragments
+
+### Images disponibles sur Google Play
+
+
+![Alt text](documentation/1.jpg)
+
+![Alt text](documentation/2.jpg)
+
+![Alt text](documentation/3.jpg)
+
+![Alt text](documentation/4.jpg)
+
+![Alt text](documentation/5.jpg)
+
+![Alt text](documentation/6.jpg)
+
+![Alt text](documentation/7.jpg)
