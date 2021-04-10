@@ -1,87 +1,40 @@
 # IUT-2A-Java-ProjetAndroid-DessineIt
 
-One Paragraph of project description goes here
+Ce projet a été réalisé en parralèle avec le module Android de l'IUT informatique des Cézeaux.
 
-## Getting Started
+## Présentation application DessineIt
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Présentation application DessineIt 
+ 
+Cette application est un jeu de téléphone arabe. On peut le considérer comme une adaptation mobile du site web GarticPhone (https://garticphone.com/fr). 
+ 
+Les règles sont simples : 
+*	On rassemble les joueurs.  
+*	Chaque joueur choisit un mot/phrase 
+*	Le suivant doit la dessiner 
+*	Le prochain doit deviner ce qu’était la phrase du premier joueur, en se basant uniquement sur le dessin. 
+*	Etc jusqu’à ce que les expressions aient tournées entre les mains de tous les joueurs. 
+*	Enfin, on affiche les résultats pour constater les déformations qu’il y a pu y avoir. 
+ 
+Le contexte de notre application est donc de faire une version mobile de ce jeu. 
+ 
+## Commentaire sur le travail effectué
 
-### Prerequisites
+L’application fonctionne correctement lorsque toutes les conditions sont optimales. En effet, lors d’une partie, nous ne sommes pas à l’abri d’un dysfonctionnement si la connexion d’un joueur est hésitante. De plus, si un joueur quitte la partie, cela bloque le déroulement du jeu (Nous sommes proches de régler ce problème, c’est pour cette raison que nous avons changé bon nombre d’activités en fragments. Notre objectif était que si un joueur quitte cela mette fin à la partie. Certes ce n’est pas formidable d’un point de vue de la jouabilité, mais le temps nous a cruellement manqué. 
+Autre souci, nous n’avons pas de gestion des données. Autrement lorsqu’une partie se déroule, les images et les données qui ont pu s’échanger restent sur Firebase. Pour cela nous aurions dû faire un serveur ou une entité tierce capable de gérer les ressources des serveurs mais nous avions d’autres objectifs plus importants à régler. A long terme cela aura pour conséquence de remplir notre espace de stockage donc cela reste un problème qu’il faut régler. 
+Enfin nous aurions aimé ajouter un mode de jeu qui permettait de jouer avec plusieurs téléphones en se les passant physiquement (au cas où tout le monde n’est pas de téléphone Android à disposition). Nous étudierons cet aspect du jeu dans un second temps peut-être. 
+ 
+Pour le reste, nous sommes satisfaits du travail. Notre diagramme de classes nous a paru un peu maladroit mais au moins l’application fonctionne et nous avons pu réaliser de vraies parties dont les bêta-testeurs ont apprécié prendre part. 
+ 
+Voici un lien YouTube d’une partie simulée puisque vous ne pourrez peut-être pas tester par vous-même l’application.  
+https://www.youtube.com/watch?v=hrj-bawHW4A 
 
-What things you need to install the software and how to install them
+## Lien GooglePlay
 
-```
-Give examples
-```
+https://play.google.com/store/apps/details?id=iut.cours.tp
 
-### Installing
+### Partie interressantes du projet
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Firebase (Storage, Real-Time)
+* Paint view et gestion du dessin de l'utilisateur
+* Fragments
